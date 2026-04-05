@@ -191,5 +191,19 @@
         margin-top: auto;
     }
 
+    .hardcore-room{
+        background-color: #ff716c !important;
+
+        .room-title{
+            color: #ff716c !important;
+        }
+
+        .room-btn{
+            background: linear-gradient(90deg, rgba(255,113,108,1), rgba(215,56,59,1),100%) !important;
+            color: #490006 !important;
+        }
+
+    }
+
 }
 
