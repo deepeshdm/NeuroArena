@@ -66,8 +66,8 @@ export class LandingPageComponent {
     "title": "REAL-TIME QUIZ BATTLES",
     "description": "Deploy your knowledge in high-velocity arena matches. Compete with up to 10 players simultaneously where every millisecond counts. Our unique speed-based scoring algorithm rewards both accuracy and rapid neural firing.",
     "badges": [
-      "10 PLAYERS",
-      "LOW LATENCY"
+      { "label": "10 PLAYERS", "variant": "default" },
+      { "label": "LOW LATENCY", "variant": "accent" }
     ]
   },
   {
@@ -76,8 +76,8 @@ export class LandingPageComponent {
     "title": "INSTANT PLAY",
     "description": "Frictionless entry into the matrix. Experience our zero-signup flow—simply designate an alias and connect to a neural uplink immediately. No forms, no delays, just pure competitive intellect.",
     "badges": [
-      "NO SIGNUP",
-      "QUICK JOIN"
+      { "label": "NO SIGNUP", "variant": "default" },
+      { "label": "QUICK JOIN", "variant": "accent" }
     ]
   },
   {
@@ -86,8 +86,8 @@ export class LandingPageComponent {
     "title": "DIVERSE ARENAS",
     "description": "Master multiple intelligence domains. Choose from specialized battlegrounds like Brain Teasers for logic, Hardcore Mode for high-stakes pressure, or tactical science and gaming sectors.",
     "badges": [
-      "8+ THEMES",
-      "DAILY ROTATION"
+      { "label": "8+ THEMES", "variant": "default" },
+      { "label": "DAILY ROTATION", "variant": "accent" }
     ]
   },
   {
@@ -96,12 +96,11 @@ export class LandingPageComponent {
     "title": "COGNITIVE SNAPSHOT",
     "description": "Post-battle diagnostics for high-performers. Receive a deep neural analysis including metrics on response latency, logic consistency, and category-specific accuracy to sharpen your competitive edge.",
     "badges": [
-      "PERFORMANCE AI",
-      "STAT TRACKING"
+      { "label": "PERFORMANCE AI", "variant": "default" },
+      { "label": "STAT TRACKING", "variant": "accent" }
     ]
   }
 ]
-
 
 
 }

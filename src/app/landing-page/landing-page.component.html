@@ -106,9 +106,9 @@
 
                             <!-- Badges -->
                             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
-                                @for(badge of item.badges; track badge){
-                                    <div class="badge">
-                                        {{ badge }}
+                                @for(badge of item.badges; track badge.label){
+                                    <div [class]="'badge badge-' + badge.variant">
+                                        {{ badge.label }}
                                     </div>
                                 }
                             </div>
