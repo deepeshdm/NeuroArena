@@ -53,11 +53,11 @@
 
         @for(item of roomTypes; track item.id){
 
-            <div class="room-item">
+            <div class="room-item" [class]="{'hardcore-room': item.id=='hardcore-mode' }">
                 <img class="room-icon" [src]="item.icon" />
                 <div class="room-title"> {{ item.title }} </div>
                 <div class="room-description"> {{ item.description }} </div>
-                <button class="room-btn"> 
+                <button [class]="{'room-btn': item.id!='hardcore-mode', 'hard-core-btn': item.id=='hardcore-mode' }"> 
                     @if(item.id=='hardcore-mode'){ ENTER IF YOU DARE }@else { ENTER }
                 </button>
             </div>
