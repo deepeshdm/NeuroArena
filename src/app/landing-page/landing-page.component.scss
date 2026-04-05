@@ -340,6 +340,49 @@
 
 
 
+.info-container{
+
+
+    .header{
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .header-main-txt{
+            font-family: "Space Grotesk-Bold", Helvetica;
+            font-weight: 700;
+            color: #c1fffe;
+            font-size: 2.25rem;
+            letter-spacing: 0;
+            line-height: 2rem;
+        }
+
+        .divider{
+            height: 4px;
+            width: 80%;
+            margin:1rem 0;
+            background: linear-gradient(
+                90deg,
+                rgba(193, 255, 254, 0) 0%,
+                rgba(193, 255, 254, 1) 50%,
+                rgba(193, 255, 254, 0) 100%
+            );
+        }
+
+        .subheader{
+            font-family: "Manrope-Regular", Helvetica;
+            font-weight: 400;
+            color: #a9a9c3;
+            opacity: 0.5;
+            font-size: 0.875rem;
+            letter-spacing: 1.00px;
+            line-height: 1.25rem;
+        }
+    }
+
+}
+
 
 
 
