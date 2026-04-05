@@ -338,127 +338,233 @@
   }
 }
 
+// ============================================================================
+// INFO CARDS THEME COLORS & STYLING
+// ============================================================================
 
+.info-container {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.info-container{
-
-
-    .header{
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .header-main-txt{
-            font-family: "Space Grotesk", Helvetica;
-            font-weight: 700;
-            color: #c1fffe;
-            font-size: 2.25rem;
-            letter-spacing: 0;
-            line-height: 2rem;
-        }
-
-        .divider{
-            height: 4px;
-            width: 80%;
-            margin:1rem 0;
-            background: linear-gradient(
-                90deg,
-                rgba(193, 255, 254, 0) 0%,
-                rgba(193, 255, 254, 1) 50%,
-                rgba(193, 255, 254, 0) 100%
-            );
-        }
-
-        .subheader{
-            font-family: "Manrope", Helvetica;
-            font-weight: 400;
-            color: #a9a9c3;
-            opacity: 0.5;
-            font-size: 0.875rem;
-            letter-spacing: 1.00px;
-            line-height: 1.25rem;
-        }
+    .header-main-txt {
+      font-family: "Space Grotesk", Helvetica;
+      font-weight: 700;
+      color: #c1fffe;
+      font-size: 2.25rem;
+      letter-spacing: 0;
+      line-height: 2rem;
     }
 
+    .divider {
+      height: 4px;
+      width: 80%;
+      margin: 1rem 0;
+      background: linear-gradient(
+        90deg,
+        rgba(193, 255, 254, 0) 0%,
+        rgba(193, 255, 254, 1) 50%,
+        rgba(193, 255, 254, 0) 100%
+      );
+    }
+
+    .subheader {
+      font-family: "Manrope", Helvetica;
+      font-weight: 400;
+      color: #a9a9c3;
+      opacity: 0.5;
+      font-size: 0.875rem;
+      letter-spacing: 1px;
+      line-height: 1.25rem;
+    }
+  }
 }
 
+.info-grid {
+  margin-top: 3rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  z-index: 1;
 
-.info-grid{
-    margin-top: 3rem; 
-    margin-left: 5rem; 
-    margin-right: 5rem; 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    gap: 1rem;
+  }
 }
 
-// Only add hover effect - keep it minimal
-
-.info-grid > div {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+// Base card styling
+.info-card {
+  background-color: #1c1d3799;
+  border-radius: 1rem;
+  border: 1px solid #45465c4c;
+  padding: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
   &:hover {
     transform: translateY(-6px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   }
-}
 
-// Optional: Responsive grid
-@media (max-width: 1024px) {
-  .info-grid {
-    grid-template-columns: 1fr !important;
-    width: 80% !important;
+  @media (max-width: 768px) {
+    padding: 1.25rem;
   }
 }
 
-@media (max-width: 768px) {
-  .info-grid {
-    width: 90% !important;
+// ============================================================================
+// THEME: CYAN (Real-Time Battles & Cognitive Snapshot)
+// ============================================================================
+
+.info-card.theme-cyan {
+  border-color: #45465c66;
+
+  &:hover {
+    border-color: rgba(193, 255, 254, 0.3);
+  }
+
+  .badge-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(193, 255, 254, 0.08) 0%,
+      rgba(0, 255, 255, 0.05) 100%
+    );
+  }
+
+  .badge-title {
+    text-shadow: 0 0 10px rgba(193, 255, 254, 0.3);
   }
 }
 
-.info-card{
-    background-color: #1c1d3799; 
-    border-radius: 1rem; 
-    border: 1px solid #45465c4c; 
-    padding: 1.5rem; 
-    overflow: hidden; 
-    position: relative;
+// ============================================================================
+// THEME: MAGENTA (Instant Play)
+// ============================================================================
+
+.info-card.theme-magenta {
+  border-color: rgba(255, 81, 250, 0.3);
+  background: rgba(75, 35, 85, 0.4);
+
+  &:hover {
+    border-color: rgba(255, 81, 250, 0.5);
+    box-shadow: 0 15px 40px rgba(255, 81, 250, 0.15);
+  }
+
+  .badge-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 81, 250, 0.1) 0%,
+      rgba(150, 50, 200, 0.05) 100%
+    );
+  }
+
+  .badge-title {
+    text-shadow: 0 0 10px rgba(255, 81, 250, 0.3);
+  }
 }
 
-.badge-icon{
-    width: 4rem; 
-    height: 4rem; 
-    flex-shrink: 0; 
-    object-fit: contain;
+// ============================================================================
+// THEME: YELLOW (Diverse Arenas)
+// ============================================================================
+
+.info-card.theme-yellow {
+  border-color: rgba(255, 255, 0, 0.2);
+  background: rgba(50, 50, 20, 0.4);
+
+  &:hover {
+    border-color: rgba(255, 255, 0, 0.4);
+    box-shadow: 0 15px 40px rgba(255, 255, 0, 0.1);
+  }
+
+  .badge-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 0, 0.08) 0%,
+      rgba(255, 150, 0, 0.05) 100%
+    );
+  }
+
+  .badge-title {
+    text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+  }
 }
 
-.badge-title{
-    font-family: 'Space Grotesk', Helvetica; 
-    font-weight: 700; 
-    color: #E4E3FE; 
-    font-size: 1.125rem; 
-    line-height: 1.25rem;
+// ============================================================================
+// BADGE STYLING
+// ============================================================================
+
+.badge-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(193, 255, 254, 0.05) 0%,
+    rgba(193, 255, 254, 0.02) 100%
+  );
+  pointer-events: none;
 }
 
-.badge-overlay{
-    position: absolute;
-     inset: 0; 
-     background: linear-gradient(180deg, rgba(255,113,108,0.05) 0%, rgba(193,255,254,0.05) 100%); 
-     pointer-events: none;
+.badge-icon {
+  width: 4rem;
+  height: 4rem;
+  flex-shrink: 0;
+  object-fit: contain;
+
+  @media (max-width: 768px) {
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
-.badge-description{
-    font-family: 'Manrope', Helvetica; 
-    font-weight: 400; 
-    color: #a9a9c3; opacity: 0.5; 
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+.badge-title {
+  font-family: "Space Grotesk", Helvetica;
+  font-weight: 700;
+  color: #e4e3fe;
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 }
 
+.badge-description {
+  font-family: "Manrope", Helvetica;
+  font-weight: 400;
+  color: #a9a9c3;
+  opacity: 0.6;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin: 0;
 
+  @media (max-width: 768px) {
+    font-size: 0.8125rem;
+    line-height: 1.15rem;
+  }
 
-// Badge styling
+  span {
+    display: inline;
+    font-weight: inherit;
+    color: inherit;
+  }
+}
+
+// ============================================================================
+// BADGE TAGS STYLING
+// ============================================================================
+
 .badge {
   display: inline-block;
   font-family: "Space Grotesk", Helvetica;
@@ -471,52 +577,56 @@
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    font-size: 0.5rem;
+    padding: 0.4rem 0.65rem;
+  }
 }
- 
+
 // Default badge - Cyan
 .badge-default {
   color: #c1fffe;
   border: 1px solid #c1fffe66;
   background: rgba(193, 255, 254, 0.08);
- 
+
   &:hover {
     border-color: #c1fffe;
     background: rgba(193, 255, 254, 0.15);
     box-shadow: 0 0 12px rgba(193, 255, 254, 0.2);
   }
 }
- 
+
 // Accent badge - Magenta
 .badge-accent {
   color: #ff51fa;
   border: 1px solid #ff51fa66;
   background: rgba(255, 81, 250, 0.08);
- 
+
   &:hover {
     border-color: #ff51fa;
     background: rgba(255, 81, 250, 0.15);
     box-shadow: 0 0 12px rgba(255, 81, 250, 0.2);
   }
 }
- 
-// Responsive grid
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+
 @media (max-width: 1024px) {
   .info-grid {
-    grid-template-columns: 1fr !important;
-    width: 80% !important;
+    grid-template-columns: 1fr;
   }
 }
- 
+
 @media (max-width: 768px) {
   .info-grid {
-    width: 90% !important;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
- 
-  .badge {
-    font-size: 0.5rem;
-    padding: 0.4rem 0.65rem;
+
+  .info-card {
+    padding: 1.25rem;
   }
 }
-
-
-

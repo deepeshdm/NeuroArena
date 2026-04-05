@@ -80,7 +80,7 @@
 
             @for(item of infoCards; track item.id){
 
-                <div class="info-card">
+                <div class="info-card" [class]="'theme-' + item.theme">
 
                     <!-- Background gradient overlay -->
                     <div class="badge-overlay"></div>
@@ -99,9 +99,19 @@
                                 {{ item.title }}
                             </div>
 
-                            <!-- Description -->
+                            <!-- Description with highlights -->
                             <div class="badge-description">
-                                {{ item.description }}
+                                @if(item.descriptionHighlight){
+                                    @for(part of item.descriptionHighlight; track $index){
+                                        @if(part.highlight){
+                                            <span style="font-weight: 600;" [style]="{ 'color': part.color }" >{{ part.text }}</span>
+                                        }@else{
+                                            <span>{{ part.text }}</span>
+                                        }
+                                    }
+                                }@else{
+                                    {{ item.description }}
+                                }
                             </div>
 
                             <!-- Badges -->
