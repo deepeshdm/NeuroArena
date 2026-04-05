@@ -383,6 +383,29 @@
 
 }
 
+// Only add hover effect - keep it minimal
 
+.info-grid > div {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Optional: Responsive grid
+@media (max-width: 1024px) {
+  .info-grid {
+    grid-template-columns: 1fr !important;
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    width: 90% !important;
+  }
+}
 
 
