@@ -1,0 +1,31 @@
+
+
+
+.app-header{
+    display: flex;
+    width: 99%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    position: relative;
+    background: linear-gradient(to bottom right, #15162d, #0b0c1f);
+
+    .header-title{
+        display: flex;
+        align-items: center;
+        width: 123.27px;
+        height: 32px;
+        margin-top: -1.00px;
+        font-family: "Space Grotesk-Bold", Helvetica;
+        font-weight: 700;
+        color: #c1fffe;
+        font-size: 24px;
+        letter-spacing: -1.20px;
+        line-height: 32px;
+        white-space: nowrap;
+    }
+
+}
+
+
+
