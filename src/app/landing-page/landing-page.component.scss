@@ -21,6 +21,34 @@
 }
 
 
+.main-input-box{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem;
+    position: relative;
+    background-color: #1c1d3799;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid;
+    border-color: #45465c4c;  
 
+
+  .gradient {
+    position: absolute;
+    height: calc(100% - 2px);
+    top: 1px;
+    left: 1px;
+    width: 4px;
+    background: linear-gradient(
+        180deg,
+        rgba(193, 255, 254, 1) 0%,
+        rgba(255, 81, 250, 1) 100%
+    );
+    }
+
+}
 
 
