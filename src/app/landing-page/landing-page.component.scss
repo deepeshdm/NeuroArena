@@ -198,27 +198,42 @@
             color: #ff716c !important;
         }
 
-        .hard-core-btn{
+    .hard-core-btn {
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0.85rem 0;
             border-radius: 0.75rem;
-            font-family: "Space Grotesk-Bold", Helvetica;
-            font-weight: 700;
-            text-align: center;
             border: 1px solid #c1fffe33;
             margin-top: auto;
-            outline: none;
+            color: white;
+            font-weight: 700;
+            background: #111; /* base background */
+            }
+
+            /* overlay layer */
+            .hard-core-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
 
             background: linear-gradient(
-                230deg, 
-                rgba(255,113,108,1) 0%, 
-                rgba(215,56,59,1) 100%
-            ) !important;
+                90deg,
+                rgba(255,113,108,0.9),
+                rgba(215,56,59,0.9)
+            );
 
-            color: #490006 !important;
-        }
+            opacity: 0.85;   /* control overlay strength */
+            z-index: 0;
+            }
+
+            /* keep text above overlay */
+            .hard-core-btn span {
+            position: relative;
+            z-index: 1;
+            }
 
     }
 
