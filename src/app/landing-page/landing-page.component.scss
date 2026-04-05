@@ -192,26 +192,29 @@
     }
 
     .hardcore-room{
+
+        position: relative;
+        overflow: hidden;
         border-color: #ff716c !important;
 
         .room-title{
             color: #ff716c !important;
         }
 
-    .hard-core-btn {
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.85rem 0;
-            border-radius: 0.75rem;
-            border: 1px solid #c1fffe33;
-            margin-top: auto;
-            color: white;
-            font-weight: 700;
-            background: #111; /* base background */
-            }
+        .hard-core-btn {
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.85rem 0;
+                border-radius: 0.75rem;
+                border: 1px solid #c1fffe33;
+                margin-top: auto;
+                color: white;
+                font-weight: 700;
+                background: #111; /* base background */
+                }
 
             /* overlay layer */
             .hard-core-btn::before {
@@ -235,6 +238,28 @@
             z-index: 1;
             }
 
+    }
+
+
+    /* overlay layer */
+    .hardcore-room::before{
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(255,113,108,0.18),
+            rgba(215,56,59,0.18)
+        );
+
+        z-index: 0;
+            pointer-events: none; /* allow clicks */
+    }
+
+    /* keep content above overlay */
+    .hardcore-room > *{
+            position: relative;
+            z-index: 1;
     }
 
 }
