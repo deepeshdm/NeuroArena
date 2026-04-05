@@ -196,6 +196,7 @@
         position: relative;
         overflow: hidden;
         border-color: #ff716c !important;
+        animation: pulseDanger 1.5s infinite;
 
         .room-title{
             color: #ff716c !important;
@@ -262,5 +263,31 @@
             z-index: 1;
     }
 
+}
+
+
+@keyframes pulseDanger{
+
+  0%{
+    box-shadow: 0 0 0px rgba(255,113,108,0.2);
+  }
+
+  50%{
+    box-shadow: 0 0 25px rgba(255,113,108,0.35);
+  }
+
+  100%{
+    box-shadow: 0 0 0px rgba(255,113,108,0.2);
+  }
+}
+
+
+.room-item{
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.room-item:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
