@@ -11,7 +11,7 @@
 
 <div class="main-container">
 
-    <div class="main-text">
+    <div class="main-text" style="margin-top: 2rem;">
         <div style="color: #c1fffe">CHOOSE YOUR</div>
         <div style="color: #ff51fa">BATTLEGROUND</div>
     </div>
@@ -47,5 +47,25 @@
         <div class="info-msg"> Initialize neural uplink protocol • Secure connection required </div>
 
     </div>
+
+
+    <div class="room-grid" style="margin-top: 3rem; margin-bottom: 10rem;">
+
+        @for(item of roomTypes; track item.id){
+
+            <div class="room-item">
+                <img class="room-icon" [src]="item.icon" />
+                <div class="room-title"> {{ item.title }} </div>
+                <div class="room-description"> {{ item.description }} </div>
+                <button class="room-btn"> 
+                    @if(item.id=='hardcore-mode'){ ENTER IF YOU DARE }@else { ENTER }
+                </button>
+            </div>
+
+        }
+
+    </div>
+
+
 
 </div>

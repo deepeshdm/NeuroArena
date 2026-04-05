@@ -133,5 +133,22 @@
 }
 
 
+.room-grid{
 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem; /* optional spacing */
+    width: 70%;
+
+    .room-item{
+        background-color: #1c1d3799;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid;
+        border-color: #45465c4c;  
+        padding: 1rem;
+    }
+
+}
 
