@@ -9,4 +9,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'neuroarena-ui';
+
+  openGithub(){
+    window.open('https://github.com/deepeshdm/NeuroArena', '_blank');
+  }
+
 }
