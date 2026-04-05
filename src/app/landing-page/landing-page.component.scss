@@ -291,3 +291,30 @@
   box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
+
+.main-input-box::after{
+
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(193,255,254,0.08) 50%,
+    transparent 60%
+  );
+
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan{
+
+  from{
+    transform: translateX(-100%);
+  }
+
+  to{
+    transform: translateX(100%);
+  }
+}
