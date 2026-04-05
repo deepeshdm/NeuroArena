@@ -1,5 +1,6 @@
 
 
+
 .main-container{
     display: flex;
     flex-direction: column;
@@ -317,4 +318,99 @@
   to{
     transform: translateX(100%);
   }
+}
+
+
+
+
+
+
+
+
+
+.diagonal-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 50% 50%, #070812 0%, #02030a 70%);
+}
+
+
+/* moving diagonal layer */
+.diagonal-bg::before{
+
+    content:"";
+    position:absolute;
+    inset:-50%;
+
+    background-image:
+        repeating-linear-gradient(
+            -25deg,
+            rgba(0,255,255,0.06) 0px,
+            rgba(0,255,255,0.06) 2px,
+            transparent 2px,
+            transparent 60px
+        ),
+        repeating-linear-gradient(
+            -25deg,
+            rgba(255,81,250,0.05) 0px,
+            rgba(255,81,250,0.05) 1px,
+            transparent 1px,
+            transparent 120px
+        );
+
+    animation: diagonalMove 14s linear infinite;
+
+    filter: blur(0.3px);
+}
+
+
+
+/* subtle glow layer */
+.diagonal-bg::after{
+
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(circle at 20% 30%, #00ffff22, transparent 40%),
+        radial-gradient(circle at 80% 70%, #ff51fa22, transparent 40%);
+
+    animation: glowPulse 6s ease-in-out infinite alternate;
+
+}
+
+
+
+/* animations */
+
+@keyframes diagonalMove{
+
+    from{
+        transform: translate3d(0,0,0);
+    }
+
+    to{
+        transform: translate3d(-200px,-200px,0);
+    }
+
+}
+
+
+@keyframes glowPulse{
+
+    from{
+        opacity:0.35;
+        transform: scale(1);
+    }
+
+    to{
+        opacity:0.65;
+        transform: scale(1.1);
+    }
+
 }
