@@ -7,7 +7,7 @@
 .lobby-main-container{
     display: flex;
     gap:2rem;
-    margin: 3rem auto;
+    margin: 1rem auto;
     width: 100%;
     padding: 0rem 2rem;
     min-height: 100%;
@@ -587,4 +587,78 @@
         black 12%,
         black 100%
     );
+}
+
+
+.player-grid{
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:1.25rem;
+    width:100%;
+}
+
+.player-card{
+
+    background:#121326;
+    border-radius:1rem;
+    padding:0.75rem;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:0.4rem;
+
+    border:1px solid #c1fffe22;
+}
+
+.player-img{
+
+    width:80px;
+    height:80px;
+    border-radius:0.75rem;
+    object-fit:cover;
+
+    background:black;
+}
+
+.player-name{
+
+    font-family:'Space Grotesk';
+    font-size:0.7rem;
+    letter-spacing:1px;
+
+    color:#e4e3fe;
+}
+
+.player-status{
+
+    font-family:'Manrope';
+    font-size:0.6rem;
+    letter-spacing:1px;
+
+    color:#a9a9c3;
+}
+
+.player-status.synced{
+    color:#c1fffe;
+}
+
+.player-status.ready{
+    color:#00ffcc;
+}
+
+.empty-slot{
+
+    border:1px dashed #ffffff22;
+    background:#0c0d1a;
+}
+
+.waiting-wrapper{
+
+    font-family:'Manrope';
+    font-size:0.7rem;
+    letter-spacing:1px;
+
+    opacity:0.4;
 }

@@ -51,6 +51,47 @@
         </div>
 
 
+
+        <div class="player-grid">
+
+            <div 
+                *ngFor="let slot of slots; let i = index"
+                class="player-card"
+                [class.empty-slot]="!players[i]">
+
+                <ng-container *ngIf="players[i]; else waitingSlot">
+
+                    <img
+                        class="player-img"
+                        [src]="'alien-faces/' + players[i].img"
+                    />
+
+                    <div class="player-name">
+                        {{ players[i].name }}
+                    </div>
+
+                    <div
+                        class="player-status"
+                        [ngClass]="players[i].status.toLowerCase()"
+                    >
+                        {{ players[i].status }}
+                    </div>
+
+                </ng-container>
+
+                <ng-template #waitingSlot>
+
+                    <div class="waiting-wrapper">
+                        WAITING...
+                    </div>
+
+                </ng-template>
+
+            </div>
+
+        </div>
+
+
         <div class="flex-sb" style="width:100%;">
             <!-- INITIATE BUTTON -->
             <button class="join-btn">
