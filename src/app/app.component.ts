@@ -1,17 +1,36 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+
   title = 'neuroarena-ui';
 
+  currentRoute = '';
+
+  constructor(private router: Router){
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event:any) => {
+
+        this.currentRoute = event.urlAfterRedirects;
+
+      });
+
+  }
+
   openGithub(){
+
     window.open('https://github.com/deepeshdm/NeuroArena', '_blank');
+
   }
 
 }
