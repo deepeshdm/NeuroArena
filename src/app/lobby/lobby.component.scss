@@ -18,6 +18,66 @@
     width: 60%;
 }
 
+.neural-cap-container{
+    display:flex;
+    gap:2rem;
+    justify-content: space-around; 
+    align-self: end;
+    align-items: center;
+    padding: 1rem 2rem !important;
+
+    .header{
+        font-family: 'Space Grotesk', Helvetica;
+        font-weight: 700;
+        color: #e4e3fe;
+        font-size: 1.25rem;
+        white-space: nowrap;
+        letter-spacing: 1.2px;
+        line-height: 1rem;
+        text-transform: uppercase;
+    }
+
+    .subheader{
+        font-family: 'Manrope', Helvetica;
+        font-weight: 500;
+        color: #a9a9c3;
+        font-size: 1rem;
+        white-space: nowrap;
+        letter-spacing: 0;
+        line-height: 1rem;
+    }
+
+
+    .slot-circle{
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        background: black;
+        height: 5rem;
+        width: 5rem;
+        border: none;
+
+        .current{
+            font-family: 'Space Grotesk', Helvetica;
+            font-weight: 700;
+            color: #c1fffe;
+            font-size: 1.5rem;
+        }
+
+        .total{
+            font-family: 'Manrope', Helvetica;
+            font-weight: 500;
+            color: #a9a9c399;
+            font-size: 1rem;
+        }
+
+    }
+}
+
+
 .light-blue{
     font-family: 'Space Grotesk', Helvetica;
     font-weight: 700;
@@ -76,14 +136,18 @@
 }
 
 
+.trans-box{
+    background-color: #1c1d37;
+    padding: 0.5rem 1rem;
+    border: 2px solid #45465c33;
+    border-radius: 0.5rem;
+}
+
 .roomid-box{
     display: flex;
     gap: 1rem;
     align-items: center;
-    background-color: #1c1d37;
-    padding: 0.5rem 1rem;
-    border: 1px solid #45465c33;
-    border-radius: 0.5rem;
+
 
     .roomid{
         font-family: 'Space Grotesk', Helvetica;
