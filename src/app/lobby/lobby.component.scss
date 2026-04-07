@@ -43,7 +43,7 @@
     font-size: 0.75rem;
     white-space: nowrap;
     letter-spacing: -3px;
-    line-height: 4rem;
+    line-height: 3rem;
     font-size: 4rem;
 }
 
@@ -53,7 +53,7 @@
     font-size: 0.75rem;
     white-space: nowrap;
     letter-spacing: -3px;
-    line-height: 4rem;
+    line-height: 3rem;
     font-size: 4rem;
     background:  linear-gradient(
         17deg,
@@ -66,6 +66,41 @@
     color: transparent !important;
 }
 
+
+.grey-text{
+    font-family: 'Manrope', Helvetica;
+    font-weight: 700;
+    color: #a9a9c3;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+
+.roomid-box{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background-color: #1c1d37;
+    padding: 0.5rem 1rem;
+    border: 1px solid #45465c33;
+    border-radius: 0.5rem;
+
+    .roomid{
+        font-family: 'Space Grotesk', Helvetica;
+        font-weight: 700;
+        color: #00f5f5;
+        font-size: 1.05rem;
+        white-space: nowrap;
+        letter-spacing: 1.5px;
+        line-height: 1.25rem;
+    }
+
+    .roomicon{
+        height: 1.05rem;
+        width: 1.05rem;
+        cursor: pointer;
+    }
+}
 
 
 
