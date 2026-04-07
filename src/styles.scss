@@ -18,6 +18,13 @@ html, body {
     align-items: center;
 }
 
+.flex-sb{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
 
 .flex-col{
     display: flex;
