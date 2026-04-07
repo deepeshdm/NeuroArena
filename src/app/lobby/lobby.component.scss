@@ -6,16 +6,24 @@
 
 .lobby-main-container{
     display: flex;
-    flex-direction: column;
     gap:2rem;
     margin: 3rem auto;
-    width: 90%;
+    width: 100%;
+    padding: 0rem 2rem;
 }
 
 .main-content-container{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    width: 65%;
+}
+
+.info-content-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 35%;
 }
 
 .neural-cap-container{
@@ -310,5 +318,10 @@
     text-transform: uppercase;
 }
 
+
+.parameter-box{
+    height: 55%;
+    width: 100%;
+}
 
 
