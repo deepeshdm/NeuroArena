@@ -255,23 +255,34 @@
         rgba(0,255,254,1) 100%
     );
     border-radius: 1rem;
-
-    .btn-img{
-        
-    }
-
-    .btn-text{
-
-    }
-
-    .btn-description{
-
-    }
-
 }
 
 
+.join-btn-img{
+    width: 1.25rem;
+    height: 1.5rem;
+}
 
+.join-btn-txt{
+    font-family: 'Space Grotesk', Helvetica;
+    font-weight: 700;
+    color: #006767;
+    font-size: 1.85rem;
+    white-space: nowrap;
+    letter-spacing: -1.2px;
+    line-height: 2rem;
+    text-transform: uppercase;
+}
+
+.join-btn-description{
+    font-family: 'Manrope', Helvetica;
+    font-weight: 500;
+    color: #00676799;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    line-height: 1.25rem;
+}
 
 
 
