@@ -1,6 +1,6 @@
 
 
-<div class="app-header" *ngIf="currentRoute!='/lobby' ">
+<div class="app-header" *ngIf="['/'].includes(currentRoute)">
   <div style="display: flex; justify-content: space-between; width: 100%;">
     <div class="header-title" (click)="openGithub()"> NeuroArena </div>
   </div>
