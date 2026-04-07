@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lobby',
@@ -8,6 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './lobby.component.scss'
 })
 export class LobbyComponent {
+
+  constructor(private router: Router){}
 
   TOTAL_SLOTS = 10
 
@@ -22,6 +25,18 @@ players = [
 ]
 
 // creates array [0,1,2,3...]
-slots = Array.from({ length: this.TOTAL_SLOTS })
+slots = Array.from({ length: this.TOTAL_SLOTS });
+
+  navigateToArena(roomId?: string){
+
+    // optional: pass room type
+    if(roomId)
+      this.router.navigate(['/arena'], { queryParams: { type: roomId } })
+
+    else
+      this.router.navigate(['/arena'])
+
+  }
+
 
 }
