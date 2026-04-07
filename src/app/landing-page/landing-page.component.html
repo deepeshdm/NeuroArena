@@ -58,7 +58,7 @@
                 <img class="room-icon" [src]="item.icon" />
                 <div class="room-title"> {{ item.title }} </div>
                 <div class="room-description"> {{ item.description }} </div>
-                <button [class]="{'room-btn': item.id!='hardcore-mode', 'hard-core-btn': item.id=='hardcore-mode' }"> 
+                <button (click)="navigateToLobby()" [class]="{'room-btn': item.id!='hardcore-mode', 'hard-core-btn': item.id=='hardcore-mode' }"> 
                     @if(item.id=='hardcore-mode'){ ENTER IF YOU DARE }@else { ENTER }
                 </button>
             </div>

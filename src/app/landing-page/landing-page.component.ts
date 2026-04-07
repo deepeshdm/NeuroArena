@@ -1,11 +1,27 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
+  imports: [CommonModule],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
+
+  constructor(private router: Router){}
+
+  navigateToLobby(roomId?: string){
+
+    // optional: pass room type
+    if(roomId)
+      this.router.navigate(['/lobby'], { queryParams: { type: roomId } })
+
+    else
+      this.router.navigate(['/lobby'])
+
+  }
 
    roomTypes = [
     {
