@@ -48,9 +48,8 @@
     <!-- RIGHT SECTION: Standings & Tips -->
     <div class="arena-right">
 
-        <!-- Live Standings -->
-        <div class="standings-box">
-            
+        <!-- LIVE RANKING -->
+        <div style="display: flex; flex-direction: column;gap: 0;"> 
             <div class="standings-header">
                 <div class="standings-title">
                     <img  src="ranking.svg" alt="" />
@@ -59,31 +58,33 @@
                 <div class="live-indicator"></div>
             </div>
 
-            <div class="leaderboard">
+            <div class="standings-box">
+                <div class="leaderboard">
 
-                @for(player of leaderboard; track player.rank){
-                    
-                    @if(!player.isYou){
-                        <div class="leaderboard-item">
-                            <div class="rank">{{ player.rank }}</div>
-                            <img [src]="player.avatar" alt="player" class="avatar"/>
-                            <div class="player-name">{{ player.username }}</div>
-                            <div class="player-score">{{ player.score }}</div>
-                        </div>
-                    }@else{
-                        <div class="leaderboard-item leaderboard-you">
-                            <div class="rank">{{ player.rank }}</div>
-                            <img [src]="player.avatar" alt="you" class="avatar"/>
-                            <div class="you-info">
-                                <div class="you-name">{{ player.username }}</div>
-                                <div class="you-gap">-{{ player.ptsTo2nd }} PTS TO 2ND</div>
-                            </div>
-                            <div class="player-score">{{ player.score }}</div>
-                        </div>
-                    }
+                        @for(player of leaderboard; track player.rank){
+                            
+                            @if(!player.isYou){
+                                <div class="leaderboard-item">
+                                    <div class="rank">{{ player.rank }}</div>
+                                    <img [src]="player.avatar" alt="player" class="avatar"/>
+                                    <div class="player-name">{{ player.username }}</div>
+                                    <div class="player-score">{{ player.score }}</div>
+                                </div>
+                            }@else{
+                                <div class="leaderboard-item leaderboard-you">
+                                    <div class="rank">{{ player.rank }}</div>
+                                    <img [src]="player.avatar" alt="you" class="avatar"/>
+                                    <div class="you-info">
+                                        <div class="you-name">{{ player.username }}</div>
+                                        <div class="you-gap">-{{ player.ptsTo2nd }} PTS TO 2ND</div>
+                                    </div>
+                                    <div class="player-score">{{ player.score }}</div>
+                                </div>
+                            }
 
-                }
+                        }
 
+                </div>
             </div>
 
         </div>

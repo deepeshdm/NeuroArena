@@ -355,6 +355,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #22233f;
+  border: 1px solid #45465c1a;
+  padding: 1rem 1.5rem;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
 }
 
 .standings-title {
