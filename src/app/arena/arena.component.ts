@@ -69,19 +69,19 @@ export class ArenaComponent {
     {
       rank: 1,
       username: 'Cortex_Master',
-      avatar: 'assets/avatars/cortex.png',
+      avatar: 'alien-faces/face1.jpg',
       score: 12450
     },
     {
       rank: 2,
       username: 'Neon_Nexus',
-      avatar: 'assets/avatars/neon.png',
+      avatar: 'alien-faces/face2.jpg',
       score: 11900
     },
     {
       rank: 3,
       username: 'YOU',
-      avatar: 'assets/avatars/you.png',
+      avatar: 'alien-faces/face3.jpg',
       score: 11350,
       ptsTo2nd: 580,
       isYou: true
@@ -89,13 +89,13 @@ export class ArenaComponent {
     {
       rank: 4,
       username: 'SynapseX',
-      avatar: 'assets/avatars/synapse.png',
+      avatar: 'alien-faces/face4.jpg',
       score: 10800
     },
     {
       rank: 5,
       username: 'Ghost_Link',
-      avatar: 'assets/avatars/ghost.png',
+      avatar: 'alien-faces/face5.jpg',
       score: 9200
     }
   ];

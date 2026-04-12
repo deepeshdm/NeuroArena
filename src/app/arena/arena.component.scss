@@ -570,6 +570,13 @@
 
 .battle-tip-icon {
   font-size: 1.5rem;
+  background: #ff51fa33;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
 
   @media (max-width: 480px) {
     font-size: 1.25rem;
