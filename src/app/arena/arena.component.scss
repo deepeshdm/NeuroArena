@@ -1,6 +1,10 @@
 // ============================================================================
-// ARENA COMPONENT STYLES
+// ARENA COMPONENT - COMPLETE STYLING
 // ============================================================================
+
+* {
+  color: white;
+}
 
 .arena-container {
   display: flex;
@@ -9,11 +13,6 @@
   padding: 2rem;
   background-color: #0b0c1f;
   min-height: 100vh;
-
-  @media (max-width: 1200px) {
-    gap: 1.5rem;
-    padding: 1.5rem;
-  }
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -32,316 +31,361 @@
 }
 
 // ============================================================================
-// QUESTION SECTION (LEFT)
+// LEFT SECTION
 // ============================================================================
 
-@media (max-width: 1024px) {
-  > div:first-child {
-    flex: 1 !important;
-    width: 100% !important;
+.arena-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+
+  @media (max-width: 1024px) {
+    width: 100%;
   }
 }
 
-// Question Header responsive
-@media (max-width: 768px) {
-  [style*="font-size:2.5rem"] {
-    font-size: 2rem !important;
+// Question Header
+.question-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.phase-label {
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.75rem;
+  color: #a9a9c3;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-number {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #c1fffe;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="font-size:2.5rem"] {
-    font-size: 1.5rem !important;
+.timer {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #ff51fa;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
   }
 
-  // Stack header on mobile
-  > div:first-child > div:nth-child(2) {
-    flex-direction: column !important;
-    gap: 1rem !important;
-
-    > div:last-child {
-      align-self: flex-start !important;
-    }
-  }
-}
-
-// Question box responsive
-@media (max-width: 768px) {
-  [style*="border-left:4px"] {
-    padding: 1.5rem !important;
-
-    [style*="font-size:2rem"] {
-      font-size: 1.5rem !important;
-      line-height: 2rem !important;
-    }
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="border-left:4px"] {
-    padding: 1.25rem !important;
-    border-left-width: 3px !important;
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 999px;
+  overflow: hidden;
+}
 
-    [style*="font-size:2rem"] {
-      font-size: 1.25rem !important;
-      line-height: 1.75rem !important;
-    }
+.progress-fill {
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff, #ff51fa);
+  border-radius: 999px;
+}
+
+// Question Box
+.question-box {
+  background: rgba(28, 29, 55, 0.6);
+  border-left: 4px solid #00ffff;
+  border-radius: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-left-width: 3px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.25rem;
+    border-left-width: 3px;
   }
 }
 
-// Answer options grid responsive
-@media (max-width: 768px) {
-  [style*="grid-template-columns:repeat(2"] {
-    gap: 1.25rem !important;
+.category-badge {
+  display: inline-block;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+}
+
+.badge-text {
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.65rem;
+  color: #00ffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.question-text {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: #ffffff;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="grid-template-columns:repeat(2"] {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
+// Options Grid
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
-// Answer option button responsive
-@media (max-width: 768px) {
-  [style*="background:rgba(28,29,55,0.5)"][style*="border:1px solid"] {
-    padding: 1.25rem !important;
-    gap: 1.25rem !important;
+.option-card {
+  background: rgba(28, 29, 55, 0.5);
+  border: 1px solid #45465c4c;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  position: relative;
 
-    [style*="width:3.5rem;height:3.5rem"] {
-      width: 3rem !important;
-      height: 3rem !important;
-      font-size: 1.25rem !important;
-    }
-
-    [style*="font-size:1.125rem"] {
-      font-size: 1rem !important;
-    }
+  &:hover {
+    border-color: rgba(0, 255, 255, 0.2);
+    background: rgba(28, 29, 55, 0.7);
   }
 
-  // Selected answer (cyan)
-  [style*="background:#00ffff"] {
-    padding: 1.25rem !important;
-    gap: 1.25rem !important;
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
 
-    [style*="width:3.5rem;height:3.5rem"] {
-      width: 3rem !important;
-      height: 3rem !important;
-      font-size: 1.25rem !important;
-    }
-
-    [style*="font-size:1.125rem"] {
-      font-size: 1rem !important;
-    }
-
-    [style*="position:absolute"] {
-      width: 1.25rem !important;
-      height: 1.25rem !important;
-    }
+  @media (max-width: 480px) {
+    padding: 1rem;
+    gap: 1rem;
+    flex-direction: column;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="background:rgba(28,29,55,0.5)"][style*="border:1px solid"] {
-    padding: 1rem !important;
-    gap: 1rem !important;
-    flex-direction: column !important;
+.option-card.option-selected {
+  background: #00ffff;
+  border: none;
 
-    [style*="width:3.5rem;height:3.5rem"] {
-      width: 2.75rem !important;
-      height: 2.75rem !important;
-      font-size: 1.1rem !important;
-    }
-
-    [style*="font-size:1.125rem"] {
-      font-size: 0.9375rem !important;
-    }
+  .option-label {
+    background: #00555f;
+    color: #ffffff;
   }
 
-  // Selected answer (cyan)
-  [style*="background:#00ffff"] {
-    padding: 1rem !important;
-    gap: 1rem !important;
-    flex-direction: column !important;
+  .option-text {
+    color: #000000;
+    font-weight: 600;
+  }
 
-    [style*="width:3.5rem;height:3.5rem"] {
-      width: 2.75rem !important;
-      height: 2.75rem !important;
-      font-size: 1.1rem !important;
-    }
+  &:hover {
+    background: #00ffff;
+  }
+}
 
-    [style*="font-size:1.125rem"] {
-      font-size: 0.9375rem !important;
-    }
+.option-label {
+  background: #45465c;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #e4e3fe;
+  flex-shrink: 0;
 
-    [style*="position:absolute"] {
-      position: static !important;
-      width: 1.25rem !important;
-      height: 1.25rem !important;
-      transform: none !important;
-      align-self: flex-end !important;
-    }
+  @media (max-width: 768px) {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.option-text {
+  font-family: 'Manrope', Helvetica;
+  font-size: 1.125rem;
+  color: #a9a9c3;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9375rem;
+  }
+}
+
+.option-check {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #00555f;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+
+  @media (max-width: 480px) {
+    position: static;
+    transform: none;
+    align-self: flex-end;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 
 // ============================================================================
-// RIGHT SIDEBAR (STANDINGS & TIPS)
+// RIGHT SECTION
 // ============================================================================
 
-@media (max-width: 1024px) {
-  > div:last-child {
-    width: 100% !important;
-    flex-shrink: 1 !important;
-  }
-}
+.arena-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 22%;
+  flex-shrink: 0;
 
-// Standings box responsive
-@media (max-width: 768px) {
-  [style*="width:22%"] {
-    width: 100% !important;
-    flex-direction: row !important;
-    gap: 1.5rem !important;
+  @media (max-width: 1200px) {
+    width: 25%;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: row;
 
     > div {
-      flex: 1 !important;
+      flex: 1;
     }
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="width:22%"] {
-    width: 100% !important;
-    flex-direction: column !important;
-    gap: 1.5rem !important;
+// Standings Box
+.standings-box {
+  background: rgba(28, 29, 55, 0.6);
+  border: 1px solid #45465c4c;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    gap: 1rem;
   }
 }
 
-// Leaderboard items responsive
-@media (max-width: 768px) {
-  [style*="display:flex;gap:1rem;align-items:center;padding:0.75rem"] {
-    padding: 0.625rem 0 !important;
-    gap: 0.75rem !important;
+.standings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    img {
-      width: 1.75rem !important;
-      height: 1.75rem !important;
-    }
+.standings-title {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #e4e3fe;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 
-    > div:nth-child(3) {
-      font-size: 0.875rem !important;
-    }
-
-    > div:last-child {
-      font-size: 0.9375rem !important;
-    }
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
   }
 
-  // You badge
-  [style*="background:rgba(0,255,255,0.1)"] {
-    padding: 0.625rem !important;
-    gap: 0.75rem !important;
-
-    img {
-      width: 1.75rem !important;
-      height: 1.75rem !important;
-    }
+  @media (max-width: 480px) {
+    font-size: 0.875rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="display:flex;gap:1rem;align-items:center;padding:0.75rem"] {
-    padding: 0.5rem 0 !important;
-    gap: 0.5rem !important;
+.live-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #00ffff;
+  border-radius: 999px;
+  animation: pulse 2s ease-in-out infinite;
 
-    img {
-      width: 1.5rem !important;
-      height: 1.5rem !important;
-    }
-
-    > div:nth-child(3) {
-      font-size: 0.8125rem !important;
-    }
-
-    > div:last-child {
-      font-size: 0.875rem !important;
-    }
-  }
-
-  // You badge
-  [style*="background:rgba(0,255,255,0.1)"] {
-    padding: 0.5rem !important;
-    gap: 0.5rem !important;
-
-    img {
-      width: 1.5rem !important;
-      height: 1.5rem !important;
-    }
-
-    > div:nth-child(3) {
-      > div:first-child {
-        font-size: 0.8125rem !important;
-      }
-
-      > div:last-child {
-        font-size: 0.6rem !important;
-      }
-    }
+  @media (max-width: 480px) {
+    width: 0.625rem;
+    height: 0.625rem;
   }
 }
-
-// Battle Tip box responsive
-@media (max-width: 768px) {
-  [style*="background:rgba(75,35,75,0.3)"] {
-    padding: 1.25rem !important;
-    gap: 1rem !important;
-
-    > div:first-child {
-      > div:last-child {
-        font-size: 0.75rem !important;
-      }
-    }
-
-    > div:nth-child(2) {
-      font-size: 0.85rem !important;
-      line-height: 1.3 !important;
-    }
-
-    > div:last-child {
-      padding: 0.75rem !important;
-      font-size: 0.75rem !important;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  [style*="background:rgba(75,35,75,0.3)"] {
-    padding: 1rem !important;
-    gap: 0.75rem !important;
-
-    > div:first-child {
-      font-size: 1.25rem !important;
-
-      > div:last-child {
-        font-size: 0.7rem !important;
-      }
-    }
-
-    > div:nth-child(2) {
-      font-size: 0.8rem !important;
-      line-height: 1.2 !important;
-    }
-
-    > div:last-child {
-      padding: 0.625rem !important;
-      font-size: 0.7rem !important;
-    }
-  }
-}
-
-// ============================================================================
-// ANIMATIONS
-// ============================================================================
 
 @keyframes pulse {
   0%,
@@ -353,58 +397,256 @@
   }
 }
 
-// Hover effects
-[style*="cursor:pointer"][style*="transition"] {
-  &:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+// Leaderboard
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.leaderboard-item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(69, 70, 92, 0.3);
+
+  &:last-child {
+    border-bottom: none;
   }
 
-  &:active {
-    transform: translateY(0) !important;
+  @media (max-width: 768px) {
+    padding: 0.625rem 0;
+    gap: 0.75rem;
   }
 
   @media (max-width: 480px) {
-    &:hover {
-      transform: none !important;
-    }
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+  }
+}
 
-    &:active {
-      transform: scale(0.98) !important;
-    }
+.leaderboard-item.leaderboard-you {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: none;
+
+  @media (max-width: 768px) {
+    padding: 0.625rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
+}
+
+.rank {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  color: #a9a9c3;
+  min-width: 1.5rem;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.875rem;
+    min-width: 1.25rem;
+  }
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  object-fit: cover;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.player-name {
+  flex: 1;
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.95rem;
+  color: #e4e3fe;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8125rem;
+  }
+}
+
+.you-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.you-name {
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.95rem;
+  color: #e4e3fe;
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8125rem;
+  }
+}
+
+.you-gap {
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.65rem;
+  color: #ff51fa;
+
+  @media (max-width: 480px) {
+    font-size: 0.6rem;
+  }
+}
+
+.player-score {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  color: #c1fffe;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.875rem;
   }
 }
 
 // ============================================================================
-// RESPONSIVE TEXT SIZING
+// BATTLE TIP BOX
 // ============================================================================
 
-@media (max-width: 1024px) {
-  [style*="font-size:0.75rem"] {
-    font-size: 0.7rem !important;
+.battle-tip-box {
+  background: rgba(75, 35, 75, 0.3);
+  border: 1px solid rgba(255, 81, 250, 0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    gap: 0.75rem;
   }
 }
 
-@media (max-width: 768px) {
-  [style*="font-size:1rem"] {
-    font-size: 0.95rem !important;
-  }
+.battle-tip-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 
-  [style*="font-size:1.125rem"] {
-    font-size: 1.05rem !important;
+.battle-tip-icon {
+  font-size: 1.5rem;
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
   }
 }
 
-@media (max-width: 480px) {
-  [style*="font-size:0.9rem"] {
-    font-size: 0.8125rem !important;
+.battle-tip-title {
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #ff51fa;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
   }
 
-  [style*="font-size:0.95rem"] {
-    font-size: 0.875rem !important;
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
+}
+
+.battle-tip-text {
+  font-family: 'Manrope', Helvetica;
+  font-size: 0.9rem;
+  color: #a9a9c3;
+  line-height: 1.4;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
 
-  [style*="font-size:1rem"] {
-    font-size: 0.9rem !important;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .highlight {
+    color: #ff51fa;
+    font-weight: 600;
+  }
+}
+
+.time-warp-btn {
+  background: rgba(255, 81, 250, 0.1);
+  border: 1px solid rgba(255, 81, 250, 0.3);
+  border-radius: 0.75rem;
+  padding: 0.875rem;
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #ff51fa;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 81, 250, 0.2);
+    border-color: rgba(255, 81, 250, 0.5);
+    box-shadow: 0 0 12px rgba(255, 81, 250, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.625rem;
+    font-size: 0.7rem;
   }
 }
