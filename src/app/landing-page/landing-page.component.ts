@@ -23,6 +23,12 @@ export class LandingPageComponent {
 
   }
 
+
+
+  navigateToArena(){
+    this.router.navigate(['/arena'])
+  }
+
    roomTypes = [
     {
       "id": "mixed-bag",
