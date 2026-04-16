@@ -5,7 +5,7 @@
 
         <div class="standings-section">
             <div class="standings-header">
-                <span class="standings-icon">⊞</span>
+                <span class="standings-icon" [class.failure-icon]="!userWon">⊞</span>
                 <span class="standings-title">ARENA STANDINGS</span>
             </div>
 
@@ -15,8 +15,8 @@
                 @for(player of finalStandings; track player.rank; let i = $index){
                     
                     @if(i < 2){
-                        <div class="standing-item standing-highlight">
-                            <div class="standing-rank">#0{{ player.rank }}</div>
+                        <div class="standing-item standing-highlight" [class.standing-highlight--failure]="!userWon">
+                            <div class="standing-rank" [class.failure-rank]="!userWon">#0{{ player.rank }}</div>
                             <div class="standing-name">{{ player.username }}</div>
                             <div class="standing-score">{{ player.score }}</div>
                         </div>
@@ -25,14 +25,14 @@
                 }
 
                 <!-- Divider -->
-                <div class="standing-divider"></div>
+                <div class="standing-divider" [class.standing-divider--failure]="!userWon"></div>
 
                 <!-- Other Players -->
                 @for(player of finalStandings; track player.rank; let i = $index){
                     
                     @if(i >= 2){
                         <div class="standing-item">
-                            <div class="standing-rank">#0{{ player.rank }}</div>
+                            <div class="standing-rank" [class.failure-rank]="!userWon">#0{{ player.rank }}</div>
                             <div class="standing-name">{{ player.username }}</div>
                             <div class="standing-score">{{ player.score }}</div>
                         </div>
@@ -66,34 +66,39 @@
 
     </div>
 
-    <!-- CENTER SECTION: Victory Stats -->
+    <!-- CENTER SECTION: Victory / Failure Stats -->
     <div class="result-center">
 
-        <!-- Victory Title -->
+        <!-- Title Section -->
         <div class="victory-section">
-            <div class="victory-title">VICTORY SECURED</div>
-            <div class="victory-subtitle">SIMULATION TERMINATED. COGNITIVE DOMINANCE CONFIRMED.</div>
+            @if(userWon){
+                <div class="victory-title">VICTORY SECURED</div>
+                <div class="victory-subtitle">SIMULATION TERMINATED. COGNITIVE DOMINANCE CONFIRMED.</div>
+            } @else {
+                <div class="victory-title failure-title">CRITICAL FAILURE</div>
+                <div class="victory-subtitle failure-subtitle">SIMULATION TERMINATED. COGNITIVE COLLAPSE DETECTED.</div>
+            }
         </div>
 
         <!-- Stats Grid -->
         <div class="stats-grid">
 
-            <div class="stat-card">
+            <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">FINAL RANK</div>
                 <div class="stat-value rank-value">#04 /10</div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">SCORE</div>
                 <div class="stat-value score-value">14,250</div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">ACCURACY</div>
                 <div class="stat-value accuracy-value">98.4%</div>
             </div>
 
-            <div class="stat-card">
+            <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">AVG SPEED</div>
                 <div class="stat-value speed-value">1.2s</div>
             </div>
@@ -101,11 +106,11 @@
         </div>
 
         <!-- Cognitive Architecture -->
-        <div class="architecture-section">
+        <div class="architecture-section" [class.architecture-section--failure]="!userWon">
 
             <div class="architecture-header">
                 <div class="architecture-title">COGNITIVE ARCHITECTURE</div>
-                <div class="architecture-description">A multi-dimensional mapping of your neural firing patterns during the last session.</div>
+                <div class="architecture-description">A real-time data analysis of your neural firing patterns during the session. Your logic and speed metrics indicate a high-flow state.</div>
             </div>
 
             <div class="architecture-content">
@@ -113,29 +118,63 @@
                 <!-- Attributes List -->
                 <div class="attributes-list">
                     @for(attr of cognitiveAttributes; track attr.name){
-                        <div class="attribute-item">
-                            <div class="attribute-dot" [style.background-color]="attr.color"></div>
+                        <div class="attribute-item" [class.attribute-item--failure]="!userWon">
+                            <div class="attribute-icon">
+                                @if(attr.name === 'LOGIC'){ 🔮 }
+                                @else if(attr.name === 'SPEED'){ ⚡ }
+                                @else if(attr.name === 'FOCUS'){ 🎯 }
+                                @else if(attr.name === 'EXECUTION'){ 🎯 }
+                                @else if(attr.name === 'MEMORY'){ ⚙️ }
+                            </div>
                             <div class="attribute-name">{{ attr.name }}</div>
-                            <div class="attribute-value">{{ attr.value }}/100</div>
+                            <div class="attribute-bar-wrap">
+                                <div class="attribute-bar" [class.attribute-bar--failure]="!userWon" [style.width.%]="attr.value"></div>
+                            </div>
+                            <div class="attribute-value" [class.attribute-value--failure]="!userWon">
+                                {{ attr.value }}<span class="attribute-max">/100</span>
+                            </div>
                         </div>
                     }
                 </div>
 
                 <!-- Radar Chart -->
                 <div class="radar-chart">
-                    <svg class="radar-svg" viewBox="0 0 200 200">
-                        <!-- Background polygon -->
-                        <polygon points="100,20 164,64 142,146 58,146 36,64" fill="rgba(0,255,255,0.05)" stroke="rgba(0,255,255,0.2)" stroke-width="1"/>
-                        
-                        <!-- Data polygon -->
-                        <polygon points="100,32 158,60 132,134 68,134 42,60" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.8"/>
-                        
-                        <!-- Dots on vertices -->
-                        <circle cx="100" cy="32" r="3" fill="#00ffff"/>
-                        <circle cx="158" cy="60" r="3" fill="#00ffff"/>
-                        <circle cx="132" cy="134" r="3" fill="#00ffff"/>
-                        <circle cx="68" cy="134" r="3" fill="#00ffff"/>
-                        <circle cx="42" cy="60" r="3" fill="#00ffff"/>
+                    <svg class="radar-svg" [class.radar-svg--failure]="!userWon" viewBox="0 0 300 300">
+
+                        <!-- Axis labels -->
+                        <text x="140" y="22" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#a9a9c3" letter-spacing="1">LOGIC</text>
+                        <text x="260" y="115" text-anchor="start" font-family="Space Grotesk" font-size="11" fill="#a9a9c3" letter-spacing="1">SPEED</text>
+                        <text x="215" y="262" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#a9a9c3" letter-spacing="1">FOCUS</text>
+                        <text x="62" y="262" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#a9a9c3" letter-spacing="1">EXECUTION</text>
+                        <text x="18" y="115" text-anchor="end" font-family="Space Grotesk" font-size="11" fill="#a9a9c3" letter-spacing="1">MEMORY</text>
+
+                        <!-- Background grid polygons -->
+                        <polygon points="150,30 243,96 213,219 87,219 57,96"
+                            fill="rgba(0,255,255,0.03)" stroke="rgba(0,255,255,0.15)" stroke-width="1"/>
+                        <polygon points="150,60 222,113 199,196 101,196 78,113"
+                            fill="none" stroke="rgba(0,255,255,0.1)" stroke-width="1"/>
+                        <polygon points="150,90 201,130 185,172 115,172 99,130"
+                            fill="none" stroke="rgba(0,255,255,0.08)" stroke-width="1"/>
+
+                        <!-- Data polygon (victory: cyan / failure: red) -->
+                        @if(userWon){
+                            <polygon points="150,35 240,100 207,214 93,214 60,100"
+                                fill="rgba(0,255,255,0.12)" stroke="#00ffff" stroke-width="2" opacity="0.9"/>
+                            <circle cx="150" cy="35"  r="4" fill="#00ffff"/>
+                            <circle cx="240" cy="100" r="4" fill="#00ffff"/>
+                            <circle cx="207" cy="214" r="4" fill="#00ffff"/>
+                            <circle cx="93"  cy="214" r="4" fill="#00ffff"/>
+                            <circle cx="60"  cy="100" r="4" fill="#00ffff"/>
+                        } @else {
+                            <polygon points="150,35 240,100 207,214 93,214 60,100"
+                                fill="rgba(255,60,60,0.12)" stroke="#ff3c3c" stroke-width="2" opacity="0.9"/>
+                            <circle cx="150" cy="35"  r="4" fill="#ff3c3c"/>
+                            <circle cx="240" cy="100" r="4" fill="#ff3c3c"/>
+                            <circle cx="207" cy="214" r="4" fill="#ff3c3c"/>
+                            <circle cx="93"  cy="214" r="4" fill="#ff3c3c"/>
+                            <circle cx="60"  cy="100" r="4" fill="#ff3c3c"/>
+                        }
+
                     </svg>
                 </div>
 
@@ -145,8 +184,13 @@
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <button class="btn-primary" (click)="playAgain()">PLAY AGAIN</button>
-            <button class="btn-secondary" (click)="newBattle()">NEW BATTLE</button>
+            @if(userWon){
+                <button class="btn-primary" (click)="playAgain()">PLAY AGAIN</button>
+                <button class="btn-secondary" (click)="newBattle()">NEW BATTLE</button>
+            } @else {
+                <button class="btn-primary btn-primary--failure" (click)="retry()">RETRY</button>
+                <button class="btn-secondary btn-secondary--failure" (click)="newBattle()">NEW BATTLE</button>
+            }
         </div>
 
     </div>

@@ -36,6 +36,9 @@ interface ResultData {
 })
 export class ResultComponent {
 
+  // Toggle this to switch between Victory and Failure states
+  userWon: boolean = true;
+
   finalStandings: FinalStanding[] = [
     {
       rank: 1,
@@ -69,7 +72,7 @@ export class ResultComponent {
     }
   ];
 
-  battlePersona: BattlePersona = {
+  victoryPersona: BattlePersona = {
     name: 'The Architect',
     description: 'You build mental structures with terrifying precision. Your logic is your strongest weapon, allowing you to bypass noise effortlessly.',
     topSkill: 'Structural Logic',
@@ -78,20 +81,23 @@ export class ResultComponent {
     growthValue: 'Aura-7'
   };
 
+  failurePersona: BattlePersona = {
+    name: 'The Fragmented',
+    description: 'Your neural cohesion is faltering. Mental structures are collapsing under the pressure of noise, leading to critical inefficiencies in logic execution.',
+    topSkill: 'Structural Logic',
+    skillLevel: 'Elite',
+    growthArea: 'Speed-Focus Synergy',
+    growthValue: 'Aura-7'
+  };
+
+  get battlePersona(): BattlePersona {
+    return this.userWon ? this.victoryPersona : this.failurePersona;
+  }
+
   cognitiveAttributes: CognitiveAttribute[] = [
     {
       name: 'LOGIC',
       value: 94,
-      color: '#ffffff'
-    },
-    {
-      name: 'FOCUS',
-      value: 88,
-      color: '#ff51fa'
-    },
-    {
-      name: 'MEMORY',
-      value: 72,
       color: '#ffffff'
     },
     {
@@ -100,8 +106,18 @@ export class ResultComponent {
       color: '#00ffff'
     },
     {
+      name: 'FOCUS',
+      value: 88,
+      color: '#ff51fa'
+    },
+    {
       name: 'EXECUTION',
       value: 85,
+      color: '#ffffff'
+    },
+    {
+      name: 'MEMORY',
+      value: 72,
       color: '#ffffff'
     }
   ];
@@ -117,6 +133,11 @@ export class ResultComponent {
   playAgain() {
     // Navigate to same arena or lobby
     console.log('Play Again clicked');
+  }
+
+  retry() {
+    // Retry after failure
+    console.log('Retry clicked');
   }
 
   newBattle() {
