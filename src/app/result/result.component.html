@@ -1,1 +1,154 @@
-<p>result works!</p>
+<div class="result-container">
+
+    <!-- LEFT SIDEBAR: Arena Standings -->
+    <div class="result-sidebar">
+
+        <div class="standings-section">
+            <div class="standings-header">
+                <span class="standings-icon">⊞</span>
+                <span class="standings-title">ARENA STANDINGS</span>
+            </div>
+
+            <div class="final-standings">
+
+                <!-- Top Players -->
+                @for(player of finalStandings; track player.rank; let i = $index){
+                    
+                    @if(i < 2){
+                        <div class="standing-item standing-highlight">
+                            <div class="standing-rank">#0{{ player.rank }}</div>
+                            <div class="standing-name">{{ player.username }}</div>
+                            <div class="standing-score">{{ player.score }}</div>
+                        </div>
+                    }
+
+                }
+
+                <!-- Divider -->
+                <div class="standing-divider"></div>
+
+                <!-- Other Players -->
+                @for(player of finalStandings; track player.rank; let i = $index){
+                    
+                    @if(i >= 2){
+                        <div class="standing-item">
+                            <div class="standing-rank">#0{{ player.rank }}</div>
+                            <div class="standing-name">{{ player.username }}</div>
+                            <div class="standing-score">{{ player.score }}</div>
+                        </div>
+                    }
+
+                }
+
+            </div>
+        </div>
+
+        <!-- Battle Persona -->
+        <div class="persona-section">
+            <div class="persona-label">BATTLE PERSONA</div>
+            <div class="persona-name">{{ battlePersona.name }}</div>
+            <div class="persona-description">{{ battlePersona.description }}</div>
+
+            <div class="persona-details">
+                <div class="persona-skill">
+                    <div class="skill-label">TOP SKILL</div>
+                    <div class="skill-name">{{ battlePersona.topSkill }}</div>
+                    <div class="skill-level">{{ battlePersona.skillLevel }}</div>
+                </div>
+
+                <div class="persona-growth">
+                    <div class="growth-label">GROWTH AREA</div>
+                    <div class="growth-name">{{ battlePersona.growthArea }}</div>
+                    <div class="growth-value">{{ battlePersona.growthValue }}</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CENTER SECTION: Victory Stats -->
+    <div class="result-center">
+
+        <!-- Victory Title -->
+        <div class="victory-section">
+            <div class="victory-title">VICTORY SECURED</div>
+            <div class="victory-subtitle">SIMULATION TERMINATED. COGNITIVE DOMINANCE CONFIRMED.</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">FINAL RANK</div>
+                <div class="stat-value rank-value">#04 /10</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">SCORE</div>
+                <div class="stat-value score-value">14,250</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">ACCURACY</div>
+                <div class="stat-value accuracy-value">98.4%</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">AVG SPEED</div>
+                <div class="stat-value speed-value">1.2s</div>
+            </div>
+
+        </div>
+
+        <!-- Cognitive Architecture -->
+        <div class="architecture-section">
+
+            <div class="architecture-header">
+                <div class="architecture-title">COGNITIVE ARCHITECTURE</div>
+                <div class="architecture-description">A multi-dimensional mapping of your neural firing patterns during the last session.</div>
+            </div>
+
+            <div class="architecture-content">
+
+                <!-- Attributes List -->
+                <div class="attributes-list">
+                    @for(attr of cognitiveAttributes; track attr.name){
+                        <div class="attribute-item">
+                            <div class="attribute-dot" [style.background-color]="attr.color"></div>
+                            <div class="attribute-name">{{ attr.name }}</div>
+                            <div class="attribute-value">{{ attr.value }}/100</div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Radar Chart -->
+                <div class="radar-chart">
+                    <svg class="radar-svg" viewBox="0 0 200 200">
+                        <!-- Background polygon -->
+                        <polygon points="100,20 164,64 142,146 58,146 36,64" fill="rgba(0,255,255,0.05)" stroke="rgba(0,255,255,0.2)" stroke-width="1"/>
+                        
+                        <!-- Data polygon -->
+                        <polygon points="100,32 158,60 132,134 68,134 42,60" fill="none" stroke="#00ffff" stroke-width="2" opacity="0.8"/>
+                        
+                        <!-- Dots on vertices -->
+                        <circle cx="100" cy="32" r="3" fill="#00ffff"/>
+                        <circle cx="158" cy="60" r="3" fill="#00ffff"/>
+                        <circle cx="132" cy="134" r="3" fill="#00ffff"/>
+                        <circle cx="68" cy="134" r="3" fill="#00ffff"/>
+                        <circle cx="42" cy="60" r="3" fill="#00ffff"/>
+                    </svg>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn-primary" (click)="playAgain()">PLAY AGAIN</button>
+            <button class="btn-secondary" (click)="newBattle()">NEW BATTLE</button>
+        </div>
+
+    </div>
+
+</div>
