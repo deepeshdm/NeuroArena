@@ -414,13 +414,21 @@ $border-muted: #45465c4c;
   font-family: 'Space Grotesk', Helvetica;
   font-weight: 700;
   font-size: 4rem;
-  color: $cyan;
+  color: transparent;
   line-height: 1;
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-  letter-spacing: 2px;
+  letter-spacing: -3px;
+  background: linear-gradient(
+    180deg,
+    rgba(193,255,254,1) 0%,
+    rgba(0,255,255,1) 100%
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color:transparent;
 
   &.failure-title {
-    color: $red;
+    color: #ff2d55 !important;
     text-shadow: 0 0 20px rgba(255, 60, 60, 0.4);
   }
 
@@ -443,8 +451,8 @@ $border-muted: #45465c4c;
 }
 
 .victory-subtitle {
-  font-family: 'Manrope', Helvetica;
-  font-weight: 500;
+  font-family: 'Space Grotesk', Helvetica;
+  font-weight: 700;
   font-size: 1rem;
   color: $pink;
   letter-spacing: 1px;

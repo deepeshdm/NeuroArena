@@ -5,7 +5,7 @@
 
         <div class="standings-section">
             <div class="standings-header">
-                <span class="standings-icon" [class.failure-icon]="!userWon">⊞</span>
+                <img alt="" src="ranking.svg" class="standings-icon" />
                 <span class="standings-title">ARENA STANDINGS</span>
             </div>
 
@@ -75,7 +75,7 @@
                 <div class="victory-title">VICTORY SECURED</div>
                 <div class="victory-subtitle">SIMULATION TERMINATED. COGNITIVE DOMINANCE CONFIRMED.</div>
             } @else {
-                <div class="victory-title failure-title">CRITICAL FAILURE</div>
+                <div class="victory-title failure-title">VICTORY FAILURE</div>
                 <div class="victory-subtitle failure-subtitle">SIMULATION TERMINATED. COGNITIVE COLLAPSE DETECTED.</div>
             }
         </div>
