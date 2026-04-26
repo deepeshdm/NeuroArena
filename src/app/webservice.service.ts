@@ -12,46 +12,27 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
- 
     async joinRoom(roomTypeId: number): Promise<any> {
-        try {
-            return await lastValueFrom(
-                this.http.post(`${this.apiUrl}/rooms/join`, { roomTypeId })
-            );
-        } catch (error) {
-            throw error;
-        }
+        return await lastValueFrom(
+            this.http.post(`${this.apiUrl}/rooms/join`, { roomTypeId })
+        );
     }
 
- 
     async joinRoomByCode(roomCode: string, username: string): Promise<any> {
-        try {
-            return await lastValueFrom(
-                this.http.post(`${this.apiUrl}/rooms/join-by-code`, { roomCode, username })
-            );
-        } catch (error) {
-            throw error;
-        }
+        return await lastValueFrom(
+            this.http.post(`${this.apiUrl}/rooms/join-by-code`, { roomCode, username })
+        );
     }
 
     async getRoomTypes(): Promise<any> {
-        try {
-            return await lastValueFrom(
-                this.http.get(`${this.apiUrl}/room-types`)
-            );
-        } catch (error) {
-            throw error;
-        }
+        return await lastValueFrom(
+            this.http.get(`${this.apiUrl}/room-types`)
+        );
     }
 
- 
     async getRoomTypeById(id: number): Promise<any> {
-        try {
-            return await lastValueFrom(
-                this.http.get(`${this.apiUrl}/room-types/${id}`)
-            );
-        } catch (error) {
-            throw error;
-        }
+        return await lastValueFrom(
+            this.http.get(`${this.apiUrl}/room-types/${id}`)
+        );
     }
 }

@@ -2,15 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../webservice.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './landing-page.component.html', 
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
 
+  username: string = '';
+  roomCode : string = '';
   roomTypes: any[] = [];
 
   constructor(private router: Router, private webservice: ApiService){}
@@ -27,37 +30,48 @@ export class LandingPageComponent {
   }
 
 
-  async joinRoom(roomItem: any){
-
-    const roomTypeId = roomItem.roomTypeId;
-    const response = await this.webservice.joinRoom(roomTypeId);
-
-    if(response.status==200 || response.status=='success'){
-
-      localStorage.clear(); // clear any existing data
-
-      // save data to local storage
-      const playerId = response.data.playerId;
-      const username = response.data.username;
-      const avatar = response.data.avatarIconUrl;
-      const roomCode = response.data.battle.roomCode;
-      const battleId = response.data.battle.battleId;
-      localStorage.setItem('playerId', playerId);
-      localStorage.setItem('username', username);
-      localStorage.setItem('avatar', avatar);
-      localStorage.setItem('roomCode', roomCode);
-      localStorage.setItem('battleId', battleId);
-
+  private handleJoinResponse(response: any): void {
+      localStorage.clear();
+      
+      localStorage.setItem('playerId', response.data.playerId);
+      localStorage.setItem('username', response.data.username);
+      localStorage.setItem('avatar', response.data.avatarIconUrl);
+      localStorage.setItem('roomCode', response.data.battle.roomCode);
+      localStorage.setItem('battleId', response.data.battle.battleId);
+      
       this.router.navigate(['/lobby']);
-    }else{
-      alert('Failed to join room: ' + response.message);
-    }
   }
 
-  async joinRoomByCode(){
-
+  async joinRoom(roomItem: any) {
+      const roomTypeId = roomItem.roomTypeId;
+      
+      try {
+          const response = await this.webservice.joinRoom(roomTypeId);
+          this.handleJoinResponse(response);
+      } catch (error: any) {
+          console.error('Error joining room:', error);
+          const errorMessage = error.error?.message || error.message || 'Failed to join room';
+          alert('Failed to join room: ' + errorMessage);
+      }
   }
 
+  async joinRoomByCode() {
+      if (!this.username || !this.roomCode) {
+          alert('Please enter both username and room code');
+          return;
+      }
+
+      console.log('Joining room with code:', this.roomCode, 'and username:', this.username);
+      
+      try {
+          const response = await this.webservice.joinRoomByCode(this.roomCode, this.username);
+          this.handleJoinResponse(response);
+      } catch (error: any) {
+          console.error('Error joining room by code:', error);
+          const errorMessage = error.error?.message || error.message || 'Failed to join room';
+          alert('Failed to join room: ' + errorMessage);
+      }
+  }
 
   infoCards = [
   {
@@ -132,7 +146,7 @@ export class LandingPageComponent {
       { "label": "STAT TRACKING", "variant": "accent" }
     ]
   }
-]
+  ]
 
 
 }
