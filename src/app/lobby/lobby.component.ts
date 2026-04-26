@@ -16,6 +16,11 @@ export class LobbyComponent {
   username: string = '';
   avatarUrl: string = '';
   roomTypeId: number = 0;
+    // Chat
+  messages: any[] = [];
+  newMessage: string = '';
+  // UI state
+  isLoading: boolean = true;
 
   constructor(private router: Router, private webservice: ApiService){}
 
@@ -41,7 +46,41 @@ export class LobbyComponent {
     this.roomTypeId = encryptedRoomTypeId ? parseInt(this.webservice.decrypt(encryptedRoomTypeId)) : 0;
     console.log('Lobby initialized for room:', this.roomCode);
     console.log('Player:', this.username);
+    // Connect WebSocket
+    await this.connectWebSocket();
+  }
 
+
+
+  async connectWebSocket() {
+    try {
+      await this.webservice.connectWebSocket(this.roomCode, this.username);
+      this.isLoading = false;
+      
+      // Listen for events
+      this.webservice.onPlayerList().subscribe((data) => {
+        this.players = data.players;
+        console.log('Updated player list:', this.players);
+      });
+      
+      this.webservice.onChatMessage().subscribe((message) => {
+        this.messages.push(message);
+        console.log('New chat message:', message);
+      });
+      
+      this.webservice.onBattleStart().subscribe(() => {
+        this.router.navigate(['/arena'], { 
+          queryParams: { 
+            battleId: this.battleId,
+            roomCode: this.roomCode 
+          } 
+        });
+      });
+      
+    } catch (error) {
+      console.error('WebSocket connection failed:', error);
+      this.isLoading = false;
+    }
   }
 
 
