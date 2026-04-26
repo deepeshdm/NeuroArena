@@ -12,6 +12,16 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
+      // Simple encrypt function
+    encrypt(data: string): string {
+        return btoa(encodeURIComponent(data));
+    }
+
+    // Simple decrypt function
+    decrypt(data: string): string {
+        return decodeURIComponent(atob(data));
+    }
+
     async joinRoom(roomTypeId: number): Promise<any> {
         return await lastValueFrom(
             this.http.post(`${this.apiUrl}/rooms/join`, { roomTypeId })

@@ -33,11 +33,11 @@ export class LandingPageComponent {
   private handleJoinResponse(response: any): void {
       localStorage.clear();
       
-      localStorage.setItem('playerId', response.data.playerId);
-      localStorage.setItem('username', response.data.username);
-      localStorage.setItem('avatar', response.data.avatarIconUrl);
-      localStorage.setItem('roomCode', response.data.battle.roomCode);
-      localStorage.setItem('battleId', response.data.battle.battleId);
+      localStorage.setItem('playerId', this.webservice.encrypt(response.data.playerId));
+      localStorage.setItem('username', this.webservice.encrypt(response.data.username));
+      localStorage.setItem('avatar', this.webservice.encrypt(response.data.avatarIconUrl));
+      localStorage.setItem('roomCode', this.webservice.encrypt(response.data.battle.roomCode));
+      localStorage.setItem('battleId', this.webservice.encrypt(response.data.battle.battleId));
       
       this.router.navigate(['/lobby']);
   }
