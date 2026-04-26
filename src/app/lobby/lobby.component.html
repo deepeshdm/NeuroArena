@@ -28,22 +28,17 @@
             <div class="neural-cap-container trans-box2"> 
                 <div class="slot-circle">
                     <div class="current">{{players.length}}</div>
-                    <div class="total">/10</div>
+                    <div class="total">/{{TOTAL_SLOTS}}</div>
                 </div>
                 <div style="display:flex;flex-direction: column;gap:1rem;"> 
                     <div class="header"> Neural Capacity </div>
                     <div class="subheader"> {{ 10 - players.length }} Slots remaining for link stability </div>
                     <div class="slots-container">
-                        <div class="slot-bar active"></div> 
-                        <div class="slot-bar active"></div> 
-                        <div class="slot-bar active"></div> 
-                        <div class="slot-bar active"></div> 
-                        <div class="slot-bar active"></div> 
-                        <div class="slot-bar waiting"></div> 
-                        <div class="slot-bar waiting"></div> 
-                        <div class="slot-bar waiting"></div> 
-                        <div class="slot-bar waiting"></div> 
-                        <div class="slot-bar waiting"></div> 
+                        <div *ngFor="let slot of slots; let i = index" 
+                            class="slot-bar" 
+                            [class.active]="i < players.length"
+                            [class.waiting]="i >= players.length">
+                        </div>
                     </div>
                 </div>
             </div>
