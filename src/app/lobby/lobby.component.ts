@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../webservice.service';
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-lobby',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss'
 })
@@ -97,6 +98,20 @@ export class LobbyComponent {
     else
       this.router.navigate(['/arena'])
 
+  }
+
+  sendMessage() {
+    if (this.newMessage.trim() === '') return;
+    this.webservice.sendChatMessage(this.roomCode, this.username, this.newMessage);
+    this.newMessage = '';
+  }
+
+  sendPulse() {
+    this.webservice.sendPulse(this.roomCode, this.username);
+  }
+
+  ngOnDestroy() {
+    this.webservice.disconnectWebSocket();
   }
 
 

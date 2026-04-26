@@ -102,7 +102,7 @@
                 <div class="join-btn-description"> Waiting for match authority (3 remaining) </div>
             </button>
             <!-- PULSE BUTTON -->
-             <button class="pulse-btn">
+             <button class="pulse-btn" (click)="sendPulse()">
                 <div class="flex-col" style="justify-content: center; align-items: center;"> 
                     <img class="pulse-btn-icon" src="pulse.svg" />
                     <div class="pulse-btn-txt"> Send Pulse </div>
@@ -168,12 +168,12 @@
             <!-- INPUT -->
             <div class="feed-input-container">
 
-                <input
-                    class="feed-input"
+                <input [(ngModel)]="newMessage"
+                    class="feed-input" type="text"
                     placeholder="Send reaction..."
                 />
 
-                <button class="feed-send-btn">
+                <button class="feed-send-btn" (click)="sendMessage()">
                     <img class="feed-send-icon" src="send.svg"/>
                 </button>
 
