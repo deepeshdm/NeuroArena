@@ -12,12 +12,7 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
-    // ==================== ROOM APIS ====================
-
-    /**
-     * Join or create a room (auto-generates username and avatar)
-     * @param roomTypeId - The type of room (1-8)
-     */
+ 
     async joinRoom(roomTypeId: number): Promise<any> {
         try {
             return await lastValueFrom(
@@ -28,11 +23,7 @@ export class ApiService {
         }
     }
 
-    /**
-     * Join a specific room with custom username
-     * @param roomCode - 6-digit room code
-     * @param username - Custom username (3-20 chars)
-     */
+ 
     async joinRoomByCode(roomCode: string, username: string): Promise<any> {
         try {
             return await lastValueFrom(
@@ -43,11 +34,6 @@ export class ApiService {
         }
     }
 
-    // ==================== ROOM TYPE APIS ====================
-
-    /**
-     * Get all available room types
-     */
     async getRoomTypes(): Promise<any> {
         try {
             return await lastValueFrom(
@@ -58,10 +44,7 @@ export class ApiService {
         }
     }
 
-    /**
-     * Get room type by ID
-     * @param id - Room type ID (1-8)
-     */
+ 
     async getRoomTypeById(id: number): Promise<any> {
         try {
             return await lastValueFrom(

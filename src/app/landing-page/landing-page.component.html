@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <button class="join-btn" (click)="navigateToArena()">JOIN ARENA</button>
+            <button class="join-btn" (click)="joinRoomByCode()">JOIN ARENA</button>
 
         </div>
 
@@ -52,13 +52,13 @@
 
     <div class="room-grid" style="margin-top: 4rem;">
 
-        @for(item of roomTypes; track item.id){
+        @for(item of roomTypes; track item.roomTypeId){
 
             <div class="room-item" [class]="{'hardcore-room': item.roomTypeId==6 }">
                 <img class="room-icon" [src]="item.iconPath" />
                 <div class="room-title"> {{ item.name }} </div>
                 <div class="room-description"> {{ item.description }} </div>
-                <button (click)="navigateToLobby()" [class]="{'room-btn': item.roomTypeId!=6, 'hard-core-btn': item.roomTypeId==6 }"> 
+                <button (click)="joinRoom(item)" [class]="{'room-btn': item.roomTypeId!=6, 'hard-core-btn': item.roomTypeId==6 }"> 
                     @if(item.roomTypeId==6){ ENTER IF YOU DARE }@else { ENTER }
                 </button>
             </div>

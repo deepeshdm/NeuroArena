@@ -26,21 +26,36 @@ export class LandingPageComponent {
 
   }
 
-  navigateToLobby(roomId?: string){
 
-    // optional: pass room type
-    if(roomId)
-      this.router.navigate(['/lobby'], { queryParams: { type: roomId } })
+  async joinRoom(roomItem: any){
 
-    else
-      this.router.navigate(['/lobby'])
+    const roomTypeId = roomItem.roomTypeId;
+    const response = await this.webservice.joinRoom(roomTypeId);
 
+    if(response.status==200 || response.status=='success'){
+
+      localStorage.clear(); // clear any existing data
+
+      // save data to local storage
+      const playerId = response.data.playerId;
+      const username = response.data.username;
+      const avatar = response.data.avatarIconUrl;
+      const roomCode = response.data.battle.roomCode;
+      const battleId = response.data.battle.battleId;
+      localStorage.setItem('playerId', playerId);
+      localStorage.setItem('username', username);
+      localStorage.setItem('avatar', avatar);
+      localStorage.setItem('roomCode', roomCode);
+      localStorage.setItem('battleId', battleId);
+
+      this.router.navigate(['/lobby']);
+    }else{
+      alert('Failed to join room: ' + response.message);
+    }
   }
 
+  async joinRoomByCode(){
 
-
-  navigateToArena(){
-    this.router.navigate(['/arena'])
   }
 
 
