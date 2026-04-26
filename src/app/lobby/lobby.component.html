@@ -19,7 +19,7 @@
                 <div class="flex-row">
                     <div class="grey-text"> ENCRYPTED ROOM ID : </div>
                     <div class="roomid-box trans-box2"> 
-                        <div class="roomid"> #482-910 </div>
+                        <div class="roomid"> {{roomCode}} </div>
                         <img class="roomicon" src="roomid-icon.svg" alt=""/> 
                     </div>
                 </div>
@@ -27,12 +27,12 @@
 
             <div class="neural-cap-container trans-box2"> 
                 <div class="slot-circle">
-                    <div class="current">7</div>
+                    <div class="current">{{players.length}}</div>
                     <div class="total">/10</div>
                 </div>
                 <div style="display:flex;flex-direction: column;gap:1rem;"> 
                     <div class="header"> Neural Capacity </div>
-                    <div class="subheader"> 3 Slots remaining for link stability </div>
+                    <div class="subheader"> {{ 10 - players.length }} Slots remaining for link stability </div>
                     <div class="slots-container">
                         <div class="slot-bar active"></div> 
                         <div class="slot-bar active"></div> 
