@@ -54,12 +54,12 @@
 
         @for(item of roomTypes; track item.id){
 
-            <div class="room-item" [class]="{'hardcore-room': item.id=='hardcore-mode' }">
-                <img class="room-icon" [src]="item.icon" />
-                <div class="room-title"> {{ item.title }} </div>
+            <div class="room-item" [class]="{'hardcore-room': item.roomTypeId==6 }">
+                <img class="room-icon" [src]="item.iconPath" />
+                <div class="room-title"> {{ item.name }} </div>
                 <div class="room-description"> {{ item.description }} </div>
-                <button (click)="navigateToLobby()" [class]="{'room-btn': item.id!='hardcore-mode', 'hard-core-btn': item.id=='hardcore-mode' }"> 
-                    @if(item.id=='hardcore-mode'){ ENTER IF YOU DARE }@else { ENTER }
+                <button (click)="navigateToLobby()" [class]="{'room-btn': item.roomTypeId!=6, 'hard-core-btn': item.roomTypeId==6 }"> 
+                    @if(item.roomTypeId==6){ ENTER IF YOU DARE }@else { ENTER }
                 </button>
             </div>
 
