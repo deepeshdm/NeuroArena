@@ -146,5 +146,14 @@ export class ApiService {
         return this.connected;
     }
 
+    sendLeave(roomCode: string, username: string): void {
+        if (this.connected && this.stompClient) {
+            this.stompClient.send('/app/quiz/leave', {}, JSON.stringify({
+                roomCode: roomCode,
+                username: username
+            }));
+        }
+    }
+
 
 }

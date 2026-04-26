@@ -184,12 +184,12 @@
         <!-- BOTTOM BUTTONS -->
         <div class="bottom-controls">
 
-            <button class="control-btn">
+            <button class="control-btn" (click)="toggleMuteChat()">
                 <img class="control-icon" src="mute.svg"/>
                 <div class="control-txt"> Mute </div>
             </button>
 
-            <button class="control-btn" style="background: #794539;">
+            <button class="control-btn" style="background: #794539;" (click)="exitRoom()">
                 <img class="control-icon" src="exit.svg"/>
                 <div class="control-txt"> Exit </div>
             </button>

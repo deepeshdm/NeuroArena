@@ -26,6 +26,7 @@ export class LobbyComponent {
   newMessage: string = '';
   // UI state
   isLoading: boolean = true;
+  muteChat: boolean = false;
 
   constructor(private router: Router, private webservice: ApiService){}
 
@@ -69,6 +70,10 @@ export class LobbyComponent {
       });
       
       this.webservice.onChatMessage().subscribe((message) => {
+        if(this.muteChat){
+          console.log('Chat is muted. Ignoring message:', message);
+          return;
+        };
         this.messages.push(message);
         console.log('All messages:', this.messages);
       });
@@ -108,6 +113,26 @@ export class LobbyComponent {
 
   sendPulse() {
     this.webservice.sendPulse(this.roomCode, this.username);
+  }
+
+  toggleMuteChat() {
+    this.muteChat = !this.muteChat;
+  }
+
+  exitRoom() {
+    if (confirm('Are you sure you want to leave the lobby?')) {
+        // Send leave message via WebSocket
+        this.webservice.sendLeave(this.roomCode, this.username);
+        
+        // Disconnect WebSocket
+        this.webservice.disconnectWebSocket();
+        
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Navigate to landing page
+        this.router.navigate(['/']);
+    }
   }
 
   ngOnDestroy() {
