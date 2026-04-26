@@ -155,41 +155,11 @@
             <!-- FEED MESSAGES -->
             <div class="activity-feed-container">
 
-                <div class="activity-row">
+                <div class="activity-row" *ngFor="let msg of messages">
                     <div class="feed-emoji">🔥</div>
                     <div>
-                        <span class="feed-highlight-pink">Logic_Gate</span>
-                        joined the uplink.
-                    </div>
-                </div>
-
-                <div class="activity-row">
-                    <div class="feed-emoji">🚀</div>
-                    <div>
-                        <span class="feed-highlight-blue">Brain_Pulse</span>
-                        is ready to sync.
-                    </div>
-                </div>
-
-                <div class="activity-row">
-                    <div class="feed-emoji">⚡</div>
-                    <div>
-                        <span class="feed-highlight-yellow">Supernova</span>
-                        latency stabilized at 12ms.
-                    </div>
-                </div>
-
-                <div class="activity-row feed-dim">
-                    <div class="feed-emoji">💬</div>
-                    <div>
-                        Scanning for 3 additional neural signatures...
-                    </div>
-                </div>
-
-                <div class="activity-row">
-                    <div class="feed-emoji">✨</div>
-                    <div>
-                        You sent a neural pulse.
+                        <span class="feed-highlight-pink">{{msg.username}}</span>
+                        {{msg.text}}
                     </div>
                 </div>
 

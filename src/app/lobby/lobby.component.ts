@@ -65,7 +65,7 @@ export class LobbyComponent {
       
       this.webservice.onChatMessage().subscribe((message) => {
         this.messages.push(message);
-        console.log('New chat message:', message);
+        console.log('All messages:', this.messages);
       });
       
       this.webservice.onBattleStart().subscribe(() => {
