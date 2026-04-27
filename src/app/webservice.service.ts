@@ -115,6 +115,7 @@ export class ApiService {
 
     // Handle incoming WebSocket messages
     private handleWebSocketMessage(data: any): void {
+        console.log('Received WebSocket message:', data);
         switch(data.type) {
             case 'PLAYER_LIST':
                 this.playerListSubject.next(data);
@@ -155,5 +156,14 @@ export class ApiService {
         }
     }
 
+
+    sendReady(roomCode: string, username: string): void {
+        if (this.connected && this.stompClient) {
+            this.stompClient.send('/app/quiz/ready', {}, JSON.stringify({
+                roomCode: roomCode,
+                username: username
+            }));
+        }
+    }
 
 }

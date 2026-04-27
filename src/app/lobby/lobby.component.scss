@@ -243,6 +243,10 @@
 
 .join-btn{
 
+    .ready{
+        background: linear-gradient(11deg, #b2e157 0%, rgb(0, 255, 254) 100%) !important;
+    }
+
     width: 100%;
     display: flex;
     flex-direction: column;

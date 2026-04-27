@@ -27,6 +27,8 @@ export class LobbyComponent {
   // UI state
   isLoading: boolean = true;
   muteChat: boolean = false;
+  isReady: boolean = false;
+  allReady: boolean = false;
 
   constructor(private router: Router, private webservice: ApiService){}
 
@@ -65,8 +67,16 @@ export class LobbyComponent {
       
       // Listen for events
       this.webservice.onPlayerList().subscribe((data) => {
-        this.players = data.players;
-        console.log('Updated player list:', this.players);
+          this.players = data.players;
+          console.log('Updated player list:', this.players);
+          // Check if current player is ready
+          const currentPlayer = this.players.find(p => p.username === this.username);
+          if (currentPlayer) {
+              this.isReady = currentPlayer.status === 'READY';
+          }
+          // Check if all players are ready
+          const allPlayersReady = this.players.length === this.TOTAL_SLOTS && this.players.every(p => p.status === 'READY');
+          this.allReady = allPlayersReady;
       });
       
       this.webservice.onChatMessage().subscribe((message) => {
@@ -79,6 +89,7 @@ export class LobbyComponent {
       });
       
       this.webservice.onBattleStart().subscribe(() => {
+        console.log('Battle started event received');
         this.router.navigate(['/arena'], { 
           queryParams: { 
             battleId: this.battleId,
@@ -133,6 +144,12 @@ export class LobbyComponent {
         // Navigate to landing page
         this.router.navigate(['/']);
     }
+  }
+
+  sendReady() {
+      if (!this.isReady) {
+          this.webservice.sendReady(this.roomCode, this.username);
+      }
   }
 
   ngOnDestroy() {

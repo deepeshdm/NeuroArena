@@ -32,7 +32,7 @@
                 </div>
                 <div style="display:flex;flex-direction: column;gap:1rem;"> 
                     <div class="header"> Neural Capacity </div>
-                    <div class="subheader"> {{ 10 - players.length }} Slots remaining for link stability </div>
+                    <div class="subheader"> {{ TOTAL_SLOTS - players.length }} Slots remaining for link stability </div>
                     <div class="slots-container">
                         <div *ngFor="let slot of slots; let i = index" 
                             class="slot-bar" 
@@ -89,12 +89,13 @@
 
         <div class="flex-sb" style="width:100%;">
             <!-- INITIATE BUTTON -->
-            <button class="join-btn" (click)="navigateToArena()">
+            <button class="join-btn" (click)="sendReady()" [disabled]="isReady">
                 <div class="flex-row">
                     <img class="join-btn-img" src="lighting.svg" alt="" />
-                    <div class="join-btn-txt"> Initiate Neural Link </div>
+                    <div class="join-btn-txt" *ngIf="!isReady"> Initiate Neural Link </div>
+                    <div class="join-btn-txt" *ngIf="isReady"> Ready </div>
                 </div>
-                <div class="join-btn-description"> Waiting for match authority (3 remaining) </div>
+                <div class="join-btn-description"> Match starts when all {{TOTAL_SLOTS}} players are ready </div>
             </button>
             <!-- PULSE BUTTON -->
              <button class="pulse-btn" (click)="sendPulse()">
