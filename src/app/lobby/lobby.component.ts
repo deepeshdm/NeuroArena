@@ -12,7 +12,7 @@ import { FormsModule } from "@angular/forms";
 })
 export class LobbyComponent {
 
-  TOTAL_SLOTS = 10 // Max players in a room
+  TOTAL_SLOTS = 2 // Max players in a room
   // creates array [0,1,2,3...]
   slots = Array.from({ length: this.TOTAL_SLOTS });
   roomCode: string = '';
