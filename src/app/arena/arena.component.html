@@ -7,40 +7,43 @@
         <div class="question-header">
             <div class="phase-label">CURRENT PHASE</div>
             <div class="header-top">
-                <div class="question-number">QUESTION 08/10</div>
-                <div class="timer">12s</div>
+                <div class="question-number">QUESTION {{ currentQuestionNumber }}/{{ totalQuestions }}</div>
+                <div class="timer">{{ timeLeft }}s</div>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill"></div>
+                <div class="progress-fill" [style.width.%]="(currentQuestionNumber / totalQuestions) * 100"></div>
             </div>
         </div>
 
         <!-- Question Box -->
-        <div class="question-box">
+        <div class="question-box" *ngIf="!isLoading; else loading">
             
             <div class="category-badge">
-                <div class="badge-text">Quantum Physics // Level 4</div>
+                <div class="badge-text">{{ category }} // {{ difficulty }}</div>
             </div>
 
             <div class="question-text">
-                What term describes the phenomenon where two particles remain connected so that the state of one instantly influences the other?
+                {{ questionText }}
             </div>
 
         </div>
 
         <!-- Answer Options -->
-        <div class="options-grid">
+        <div class="options-grid" *ngIf="!isLoading">
+            <div *ngFor="let option of options; let i = index" 
+                 class="option-card" 
+                 [class.option-selected]="option.isSelected" 
+                 (click)="selectOption(option.answerId, i)">
+                <div class="option-label">{{ getOptionLetter(i) }}</div>
+                <div class="option-text">{{ option.answerText }}</div>
+                <img *ngIf="option.isSelected" src="correct-option.svg" alt="" />
+            </div>
+        </div>
 
-            @for(option of currentQuestion.options; track option.label){
-                <div class="option-card" [class.option-selected]="option.isSelected" (click)="selectOption($index)">
-                    <div class="option-label">{{ option.label }}</div>
-                    <div class="option-text">{{ option.text }}</div>
-                    @if(option.isSelected){
-                        <img src="correct-option.svg" alt="" />
-                    }
-                </div>
-            }
-
+        <!-- Error Message -->
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+            <button (click)="requestQuestion()">Retry</button>
         </div>
 
     </div>
@@ -52,7 +55,7 @@
         <div style="display: flex; flex-direction: column;gap: 0;"> 
             <div class="standings-header">
                 <div class="standings-title">
-                    <img  src="ranking.svg" alt="" />
+                    <img src="ranking.svg" alt="" />
                     <span style="margin-left:0.5rem;"> Live Standings </span>
                 </div>
                 <div class="live-indicator"></div>
@@ -60,51 +63,41 @@
 
             <div class="standings-box">
                 <div class="leaderboard">
-
-                        @for(player of leaderboard; track player.rank){
-                            
-                            @if(!player.isYou){
-                                <div class="leaderboard-item">
-                                    <div class="rank">{{ player.rank }}</div>
-                                    <img [src]="player.avatar" alt="player" class="avatar"/>
-                                    <div class="player-name">{{ player.username }}</div>
-                                    <div class="player-score">{{ player.score }}</div>
-                                </div>
-                            }@else{
-                                <div class="leaderboard-item leaderboard-you">
-                                    <div class="rank">{{ player.rank }}</div>
-                                    <img [src]="player.avatar" alt="you" class="avatar"/>
-                                    <div class="you-info">
-                                        <div class="you-name">{{ player.username }}</div>
-                                        <div class="you-gap">-{{ player.ptsTo2nd }} PTS TO 2ND</div>
-                                    </div>
-                                    <div class="player-score">{{ player.score }}</div>
-                                </div>
-                            }
-
-                        }
-
+                    <div *ngFor="let player of leaderboard;" class="leaderboard-item" [class.leaderboard-you]="player.isYou">
+                        <div class="rank">{{ player.rank }}</div>
+                        <img [src]="player.avatar" alt="player" class="avatar"/>
+                        <div *ngIf="!player.isYou" class="player-name">{{ player.username }}</div>
+                        <div *ngIf="player.isYou" class="you-info">
+                            <div class="you-name">{{ player.username }}</div>
+                            <div class="you-gap">-{{ player.ptsTo2nd }} PTS TO 2ND</div>
+                        </div>
+                        <div class="player-score">{{ player.score }}</div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Battle Tip -->
         <div class="battle-tip-box">
-            
             <div class="battle-tip-header">
                 <div class="battle-tip-icon">
                     <img src="tip.svg" alt="" />
                 </div>
                 <div class="battle-tip-title">Battle Tip</div>
             </div>
-
             <div class="battle-tip-text">
                 Answering in under <span class="highlight">5 seconds</span> grants a <span class="highlight">2.5x Multiplier</span>. Stay sharp, think faster.
             </div>
-
         </div>
 
     </div>
 
 </div>
+
+<!-- Loading Template -->
+<ng-template #loading>
+    <div class="question-box loading-box">
+        <div class="spinner"></div>
+        <p>Loading question...</p>
+    </div>
+</ng-template>

@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Subject } from 'rxjs';
 import SockJS from 'sockjs-client';
-import { Client, Stomp } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
 import { environment } from '../environments/environment';
-import { AnonymousSubject } from 'rxjs/internal/Subject';
 
 @Injectable({
     providedIn: 'root'
@@ -12,26 +11,34 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
 export class ApiService {
 
     private apiUrl = environment.apiUrl;
-     private wsUrl = environment.wsUrl;
-    // WebSocket related
+    private wsUrl = environment.wsUrl;
+
     private stompClient: any;
     private connected = false;
-    // Subjects for WebSocket events
-    private playerListSubject = new Subject<any>();
-    private chatMessageSubject = new Subject<any>();
-    private battleStartSubject = new Subject<any>();
+
+    // Subjects
+    private playerListSubject    = new Subject<any>();
+    private chatMessageSubject   = new Subject<any>();
+    private battleStartSubject   = new Subject<any>();
+    private questionSubject      = new Subject<any>();
 
     constructor(private http: HttpClient) { }
 
-      // Simple encrypt function
     encrypt(data: string): string {
         return btoa(encodeURIComponent(data));
     }
 
-    // Simple decrypt function
     decrypt(data: string): string {
         return decodeURIComponent(atob(data));
     }
+
+    isConnected(): boolean {
+        return this.connected;
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // HTTP
+    // ─────────────────────────────────────────────────────────────
 
     async joinRoom(roomTypeId: number): Promise<any> {
         return await lastValueFrom(
@@ -46,77 +53,60 @@ export class ApiService {
     }
 
     async getRoomTypes(): Promise<any> {
-        return await lastValueFrom(
-            this.http.get(`${this.apiUrl}/room-types`)
-        );
+        return await lastValueFrom(this.http.get(`${this.apiUrl}/room-types`));
     }
 
     async getRoomTypeById(id: number): Promise<any> {
-        return await lastValueFrom(
-            this.http.get(`${this.apiUrl}/room-types/${id}`)
-        );
+        return await lastValueFrom(this.http.get(`${this.apiUrl}/room-types/${id}`));
     }
 
-    // ==================== WEBSOCKET FUNCTIONS ====================
+    // ─────────────────────────────────────────────────────────────
+    // WEBSOCKET
+    // ─────────────────────────────────────────────────────────────
 
-    // Connect to WebSocket
-    connectWebSocket(roomCode: string, username: string): Promise<boolean> {
+    connectWebSocket(roomCode: string, username: string, playerId: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const socket = new SockJS(this.wsUrl);
             this.stompClient = Stomp.over(socket);
-            
+
             this.stompClient.connect({}, () => {
                 this.connected = true;
                 console.log('WebSocket connected');
-                
-                // Subscribe to room messages
-                this.stompClient.subscribe(`/topic/room/${roomCode}`, (message:any) => {
+
+                // ── Subscribe to room topic (lobby + broadcast events) ──
+                this.stompClient.subscribe(`/topic/room/${roomCode}`, (message: any) => {
                     const data = JSON.parse(message.body);
                     this.handleWebSocketMessage(data);
                 });
-                
-                // Send join message
+
+                if(!playerId){
+                    console.warn('No playerId provided, personal queue will not be subscribed');
+                }
+
+                // ── Subscribe to personal queue for questions ──────────
+                this.stompClient.subscribe(`/topic/player/${playerId}`, (message: any) => {
+                    console.log('Received message on personal queue:', message);
+                    const data = JSON.parse(message.body);
+                    this.handleWebSocketMessage(data);
+                });
+
+                // Send join message to lobby
                 this.stompClient.send('/app/quiz/join', {}, JSON.stringify({
-                    roomCode: roomCode,
-                    username: username
+                    roomCode,
+                    username
                 }));
-                
+
                 resolve(true);
-            }, (error:any) => {
+            }, (error: any) => {
                 console.error('WebSocket connection error:', error);
                 reject(error);
             });
         });
     }
 
-    // Send chat message
-    sendChatMessage(roomCode: string, username: string, text: string): void {
-        if (this.connected && this.stompClient) {
-            this.stompClient.send('/app/quiz/chat', {}, JSON.stringify({
-                roomCode: roomCode,
-                username: username,
-                text: text
-            }));
-        }
-    }
-
-    // Send pulse (special message)
-    sendPulse(roomCode: string, username: string): void {
-        this.sendChatMessage(roomCode, username, '🔥 Sent a neural pulse!');
-    }
-
-    // Disconnect WebSocket
-    disconnectWebSocket(): void {
-        if (this.stompClient) {
-            this.stompClient.disconnect();
-            this.connected = false;
-        }
-    }
-
-    // Handle incoming WebSocket messages
     private handleWebSocketMessage(data: any): void {
         console.log('Received WebSocket message:', data);
-        switch(data.type) {
+        switch (data.type) {
             case 'PLAYER_LIST':
                 this.playerListSubject.next(data);
                 break;
@@ -126,44 +116,63 @@ export class ApiService {
             case 'BATTLE_START':
                 this.battleStartSubject.next(data);
                 break;
+            case 'QUESTION':
+                this.questionSubject.next(data.data ?? data);
+                break;
+            default:
+                console.warn('Unknown message type:', data.type);
         }
     }
 
-    // Observables for components to subscribe
-    onPlayerList() {
-        return this.playerListSubject.asObservable();
+    // ─────────────────────────────────────────────────────────────
+    // SEND METHODS
+    // ─────────────────────────────────────────────────────────────
+
+    sendChatMessage(roomCode: string, username: string, text: string): void {
+        if (this.connected && this.stompClient) {
+            this.stompClient.send('/app/quiz/chat', {}, JSON.stringify({ roomCode, username, text }));
+        }
     }
 
-    onChatMessage() {
-        return this.chatMessageSubject.asObservable();
-    }
-
-    onBattleStart() {
-        return this.battleStartSubject.asObservable();
-    }
-
-    // Check if WebSocket is connected
-    isWebSocketConnected(): boolean {
-        return this.connected;
+    sendPulse(roomCode: string, username: string): void {
+        this.sendChatMessage(roomCode, username, '🔥 Sent a neural pulse!');
     }
 
     sendLeave(roomCode: string, username: string): void {
         if (this.connected && this.stompClient) {
-            this.stompClient.send('/app/quiz/leave', {}, JSON.stringify({
-                roomCode: roomCode,
-                username: username
-            }));
+            this.stompClient.send('/app/quiz/leave', {}, JSON.stringify({ roomCode, username }));
         }
     }
-
 
     sendReady(roomCode: string, username: string): void {
         if (this.connected && this.stompClient) {
-            this.stompClient.send('/app/quiz/ready', {}, JSON.stringify({
-                roomCode: roomCode,
-                username: username
-            }));
+            this.stompClient.send('/app/quiz/ready', {}, JSON.stringify({ roomCode, username }));
         }
     }
 
+    requestCurrentQuestion(battleId: string, playerId: string): void {
+        if (this.connected && this.stompClient) {
+            this.stompClient.send('/app/quiz/get-question', {}, JSON.stringify({ battleId, playerId }));
+            console.log('Requested question for battle:', battleId);
+        } else {
+            console.warn('requestCurrentQuestion called but WebSocket is not connected');
+        }
+    }
+
+    disconnectWebSocket(): void {
+        if (this.stompClient) {
+            this.stompClient.disconnect();
+            this.connected = false;
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // OBSERVABLES
+    // ─────────────────────────────────────────────────────────────
+
+    onPlayerList()   { return this.playerListSubject.asObservable(); }
+    onChatMessage()  { return this.chatMessageSubject.asObservable(); }
+    onBattleStart()  { return this.battleStartSubject.asObservable(); }
+    onQuestion()     { return this.questionSubject.asObservable(); }
+    isWebSocketConnected(): boolean { return this.connected; }
 }

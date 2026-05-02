@@ -1,116 +1,159 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../webservice.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Option {
-  label: string;
-  text: string;
+  answerId: string;
+  answerText: string;
+  displayOrder: number;
   isSelected?: boolean;
-}
-
-interface Question {
-  id: number;
-  current: number;
-  total: number;
-  timeLimit: number;
-  category: string;
-  level: number;
-  text: string;
-  options: Option[];
-}
-
-interface Leaderboard {
-  rank: number;
-  username: string;
-  avatar: string;
-  score: number;
-  ptsTo2nd?: number;
-  isYou?: boolean;
 }
 
 @Component({
   selector: 'app-arena',
+  imports: [CommonModule, FormsModule],
   templateUrl: './arena.component.html',
   styleUrls: ['./arena.component.scss']
 })
-export class ArenaComponent {
+export class ArenaComponent implements OnInit, OnDestroy {
 
-  currentQuestion: Question = {
-    id: 1,
-    current: 8,
-    total: 10,
-    timeLimit: 12,
-    category: 'Quantum Physics',
-    level: 4,
-    text: 'What term describes the phenomenon where two particles remain connected so that the state of one instantly influences the other?',
-    options: [
-      {
-        label: 'A',
-        text: 'Quantum Superposition',
-        isSelected: false
-      },
-      {
-        label: 'B',
-        text: 'Quantum Entanglement',
-        isSelected: true
-      },
-      {
-        label: 'C',
-        text: 'Schrödinger Paradox',
-        isSelected: false
-      },
-      {
-        label: 'D',
-        text: 'Particle Locality',
-        isSelected: false
-      }
-    ]
-  };
+  battleId: string = '';
+  playerId: string = '';
+  username: string = '';
+  roomCode: string = '';
 
-  leaderboard: Leaderboard[] = [
-    {
-      rank: 1,
-      username: 'Cortex_Master',
-      avatar: 'alien-faces/face1.jpg',
-      score: 12450
-    },
-    {
-      rank: 2,
-      username: 'Neon_Nexus',
-      avatar: 'alien-faces/face2.jpg',
-      score: 11900
-    },
-    {
-      rank: 3,
-      username: 'YOU',
-      avatar: 'alien-faces/face3.jpg',
-      score: 11350,
-      ptsTo2nd: 580,
-      isYou: true
-    },
-    {
-      rank: 4,
-      username: 'SynapseX',
-      avatar: 'alien-faces/face4.jpg',
-      score: 10800
-    },
-    {
-      rank: 5,
-      username: 'Ghost_Link',
-      avatar: 'alien-faces/face5.jpg',
-      score: 9200
+  currentQuestion: any = null;
+  currentQuestionNumber: number = 0;
+  totalQuestions: number = 10;
+  questionText: string = '';
+  options: Option[] = [];
+  category: string = '';
+  difficulty: string = '';
+
+  timeLeft: number = 30;
+  timerInterval: any = null;
+  questionStartTime: number = 0;
+
+  isLoading: boolean = true;
+  hasAnswered: boolean = false;
+  errorMessage: string = '';
+
+  leaderboard: any[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private api: ApiService
+  ) {}
+
+  async ngOnInit() {
+    const rawBattleId = localStorage.getItem('battleId') || '';
+    const rawPlayerId = localStorage.getItem('playerId') || '';
+    const rawRoomCode = localStorage.getItem('roomCode') || '';
+    const rawUsername = localStorage.getItem('username') || '';
+
+    if (!rawBattleId || !rawPlayerId) {
+      console.error('No battle info found');
+      this.router.navigate(['/']);
+      return;
     }
-  ];
 
-  progressPercentage = 80; // 8 out of 10 questions
+    this.battleId = this.api.decrypt(rawBattleId);
+    this.playerId = this.api.decrypt(rawPlayerId);
+    this.roomCode = this.api.decrypt(rawRoomCode);
+    this.username = this.api.decrypt(rawUsername);
 
-  selectOption(index: number) {
-    this.currentQuestion.options.forEach((opt, i) => {
-      opt.isSelected = i === index;
+    // Subscribe BEFORE requesting (important: set up listener first)
+    this.api.onQuestion().subscribe((question: any) => {
+      console.log('Received question payload:', question);
+      this.displayQuestion(question);
     });
+
+    if (!this.api.isConnected()) {
+      console.log('WS not connected, reconnecting...');
+      try {
+        await this.api.connectWebSocket(this.roomCode, this.username, this.playerId);
+      } catch (err) {
+        this.errorMessage = 'WebSocket connection failed. Please refresh.';
+        this.isLoading = false;
+        return;
+      }
+    }
+
+    // FIX: Small delay to ensure STOMP subscriptions are registered
+    // before we fire the request
+    setTimeout(() => this.requestQuestion(), 300);
   }
 
-  activateTimeWarp() {
-    // Add time warp logic
-    console.log('Time-Warp activated!');
+  requestQuestion() {
+    if (this.api.isConnected()) {
+      this.api.requestCurrentQuestion(this.battleId, this.playerId);
+      console.log('Requested question for battle:', this.battleId);
+    } else {
+      this.errorMessage = 'WebSocket not connected. Please refresh.';
+      this.isLoading = false;
+    }
   }
 
+  displayQuestion(question: any) {
+    if (this.timerInterval) clearInterval(this.timerInterval);
+
+    this.hasAnswered           = false;
+    this.currentQuestion       = question;
+    this.currentQuestionNumber = question.questionNumber;
+    this.totalQuestions        = question.totalQuestions;
+    this.questionText          = question.questionText;
+    this.options               = (question.options || []).map((o: any) => ({ ...o, isSelected: false }));
+    this.category              = question.category   || 'General';
+    this.difficulty            = question.difficulty || 'Medium';
+    this.timeLeft              = question.timeLimitSeconds || 30;
+    this.isLoading             = false;
+    this.errorMessage          = '';
+    this.questionStartTime     = Date.now();
+
+    this.startTimer();
+    console.log('Displaying question:', this.currentQuestionNumber);
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.timerInterval);
+        if (!this.hasAnswered) this.autoSubmit();
+      }
+    }, 1000);
+  }
+
+  selectOption(answerId: string, index: number) {
+    if (!answerId || this.hasAnswered) return;
+
+    this.options.forEach((opt, i) => opt.isSelected = i === index);
+    this.hasAnswered = true;
+
+    if (this.timerInterval) clearInterval(this.timerInterval);
+
+    const responseTimeMs = Date.now() - this.questionStartTime;
+    console.log('Selected answer:', answerId, 'Response time:', responseTimeMs, 'ms');
+
+    // TODO: wire up submit answer WebSocket call here
+  }
+
+  autoSubmit() {
+    this.hasAnswered = true;
+    console.log('Auto-submit - time expired for question', this.currentQuestionNumber);
+    // TODO: wire up submit answer WebSocket call here with null answerId
+  }
+
+  getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index);
+  }
+
+  ngOnDestroy() {
+    if (this.timerInterval) clearInterval(this.timerInterval);
+  }
+  
 }

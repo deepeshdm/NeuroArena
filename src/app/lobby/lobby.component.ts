@@ -12,12 +12,13 @@ import { FormsModule } from "@angular/forms";
 })
 export class LobbyComponent {
 
-  TOTAL_SLOTS = 2 // Max players in a room
+  TOTAL_SLOTS = 1 // Max players in a room
   // creates array [0,1,2,3...]
   slots = Array.from({ length: this.TOTAL_SLOTS });
   roomCode: string = '';
   battleId: string = '';
   username: string = '';
+  playerId: string = '';
   avatarUrl: string = '';
   roomTypeId: number = 0;
     // Chat
@@ -39,6 +40,7 @@ export class LobbyComponent {
     const encryptedAvatar = localStorage.getItem('avatar');
     const encryptedRoomCode = localStorage.getItem('roomCode');
     const encryptedBattleId = localStorage.getItem('battleId');
+    const encryptedPlayerId = localStorage.getItem('playerId');
     const encryptedRoomTypeId = localStorage.getItem('roomTypeId');
 
     if (!encryptedUsername || !encryptedRoomCode) {
@@ -51,6 +53,7 @@ export class LobbyComponent {
     this.avatarUrl = encryptedAvatar ? this.webservice.decrypt(encryptedAvatar) : '';
     this.roomCode = this.webservice.decrypt(encryptedRoomCode);
     this.battleId = encryptedBattleId ? this.webservice.decrypt(encryptedBattleId) : '';
+    this.playerId = encryptedPlayerId ? this.webservice.decrypt(encryptedPlayerId) : '';
     this.roomTypeId = encryptedRoomTypeId ? parseInt(this.webservice.decrypt(encryptedRoomTypeId)) : 0;
     console.log('Lobby initialized for room:', this.roomCode);
     console.log('Player:', this.username);
@@ -62,7 +65,15 @@ export class LobbyComponent {
 
   async connectWebSocket() {
     try {
-      await this.webservice.connectWebSocket(this.roomCode, this.username);
+
+    
+      if(!this.playerId){
+        console.log(localStorage);
+        console.warn('LOBBY:  No playerId found in localStorage, generating new one');
+      }
+
+      // lobby.component.ts
+      await this.webservice.connectWebSocket(this.roomCode, this.username, this.playerId);
       this.isLoading = false;
       
       // Listen for events
@@ -153,7 +164,7 @@ export class LobbyComponent {
   }
 
   ngOnDestroy() {
-    this.webservice.disconnectWebSocket();
+    // this.webservice.disconnectWebSocket();
   }
 
 

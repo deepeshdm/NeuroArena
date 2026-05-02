@@ -662,3 +662,43 @@
     font-size: 0.7rem;
   }
 }
+
+// Add to your existing SCSS
+
+.loading-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(193, 255, 254, 0.3);
+    border-top-color: #c1fffe;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.error-message {
+    text-align: center;
+    padding: 20px;
+    color: #ff716c;
+    
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: #c1fffe;
+        color: #006767;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+}
