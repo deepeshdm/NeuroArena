@@ -702,3 +702,145 @@
         cursor: pointer;
     }
 }
+
+
+.submit-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 1.1rem 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.875rem;
+
+    // Default (no answer selected) — cyan theme like the question box border
+    background: rgba(0, 255, 255, 0.08);
+    border: 1px solid rgba(0, 255, 255, 0.25);
+
+    font-family: 'Space Grotesk', Helvetica;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(193, 255, 254, 0.4);
+
+    transition: all 0.25s ease;
+
+    // Shimmer sweep — hidden until active
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.08) 50%,
+            transparent 100%
+        );
+        transition: none;
+    }
+
+    // ── Active: answer is selected ──
+    &:not(:disabled) {
+        background: linear-gradient(135deg, #00ffff22 0%, #ff51fa22 100%);
+        border: 1px solid rgba(0, 255, 255, 0.5);
+        color: #c1fffe;
+        box-shadow:
+            0 0 18px rgba(0, 255, 255, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+        &::before {
+            animation: shimmer 2.2s ease-in-out infinite;
+        }
+
+        &:hover {
+            background: linear-gradient(135deg, #00ffff33 0%, #ff51fa33 100%);
+            border-color: rgba(0, 255, 255, 0.75);
+            box-shadow:
+                0 0 28px rgba(0, 255, 255, 0.25),
+                0 0 10px rgba(255, 81, 250, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        &:active {
+            transform: translateY(0px) scale(0.99);
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+        }
+    }
+
+    // ── Disabled: no answer selected ──
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+        padding: 1rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.85rem;
+    }
+
+    // ── Submitting state ──
+    &.submitting {
+        background: linear-gradient(135deg, #ff51fa22 0%, #00ffff22 100%);
+        border-color: rgba(255, 81, 250, 0.5);
+        color: #ff51fa;
+        cursor: not-allowed;
+        box-shadow:
+            0 0 24px rgba(255, 81, 250, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        animation: submitPulse 1.2s ease-in-out infinite;
+
+        &::before { animation: shimmer 1s ease-in-out infinite; }
+    }
+
+  .submit-idle,
+  .submit-processing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+  }
+
+  .submit-dots {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+
+      span {
+          display: inline-block;
+          width: 0.35rem;
+          height: 0.35rem;
+          border-radius: 999px;
+          background: #ff51fa;
+          animation: dotBounce 1s ease-in-out infinite;
+
+          &:nth-child(2) { animation-delay: 0.15s; }
+          &:nth-child(3) { animation-delay: 0.3s;  }
+      }
+  }
+
+  @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(1);   opacity: 0.5; }
+      40%           { transform: scale(1.4); opacity: 1;   }
+  }
+
+  @keyframes submitPulse {
+      0%, 100% { box-shadow: 0 0 18px rgba(255, 81, 250, 0.15); }
+      50%      { box-shadow: 0 0 32px rgba(255, 81, 250, 0.35); }
+  }
+}
+
+@keyframes shimmer {
+    0%   { left: -75%; }
+    100% { left: 125%; }
+}
+

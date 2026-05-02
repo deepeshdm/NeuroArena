@@ -31,14 +31,30 @@
         <!-- Answer Options -->
         <div class="options-grid" *ngIf="!isLoading">
             <div *ngFor="let option of options; let i = index" 
-                 class="option-card" 
-                 [class.option-selected]="option.isSelected" 
-                 (click)="selectOption(option.answerId, i)">
+                class="option-card" 
+                [class.option-selected]="option.isSelected"
+                [class.option-disabled]="hasAnswered"
+                (click)="selectOption(option.answerId, i)">       <!-- no submit here -->
                 <div class="option-label">{{ getOptionLetter(i) }}</div>
                 <div class="option-text">{{ option.answerText }}</div>
                 <img *ngIf="option.isSelected" src="correct-option.svg" alt="" />
             </div>
         </div>
+
+        <!-- Submit Button -->
+        <button class="submit-btn"
+                *ngIf="!isLoading"
+                [disabled]="!selectedAnswerId && !isSubmitting"
+                [class.submitting]="isSubmitting"
+                (click)="submitSelected()">
+            <span class="submit-idle" *ngIf="!isSubmitting">CONFIRM ANSWER</span>
+            <span class="submit-processing" *ngIf="isSubmitting">
+                <span class="submit-dots">
+                    <span></span><span></span><span></span>
+                </span>
+                LOCKING IN
+            </span>
+        </button>
 
         <!-- Error Message -->
         <div class="error-message" *ngIf="errorMessage">

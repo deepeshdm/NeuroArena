@@ -24,6 +24,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   username: string = '';
   roomCode: string = '';
   gameCompleted: boolean = false;  // set to true when COMPLETED message received
+  selectedAnswerId: string = '';
 
   currentQuestion: any = null;
   currentQuestionNumber: number = 0;
@@ -40,6 +41,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   hasAnswered: boolean = false;
   errorMessage: string = '';
+  isSubmitting: boolean = false;
 
   leaderboard: any[] = [];
 
@@ -135,6 +137,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     this.difficulty            = question.difficulty || 'Medium';
     this.isLoading             = false;
     this.errorMessage          = '';
+    this.selectedAnswerId = '' // reset selected answer on new question
 
     // ── Restore time if same question after refresh, else reset ──
     const savedQuestionNumber = localStorage.getItem('currentQuestionNumber');
@@ -169,22 +172,26 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   selectOption(answerId: string, index: number) {
-    if (!answerId || this.hasAnswered) return;
+      if (this.hasAnswered) return;
+      // Just highlight the selection, don't submit yet
+      this.options.forEach((opt, i) => opt.isSelected = i === index);
+      this.selectedAnswerId = answerId;  // ← track selected answer
+  }
 
-    this.options.forEach((opt, i) => opt.isSelected = i === index);
-    this.hasAnswered = true;
+  submitSelected() {
+      if (!this.selectedAnswerId || this.hasAnswered) return;
 
-    if (this.timerInterval) clearInterval(this.timerInterval);
+      this.hasAnswered = true;
+      this.isSubmitting = true;
+      if (this.timerInterval) clearInterval(this.timerInterval);
 
-    const responseTimeMs = Date.now() - this.questionStartTime;
-    console.log('Selected answer:', answerId, 'Response time:', responseTimeMs, 'ms');
-
-    this.api.submitAnswer(
-        this.battleId, this.playerId,
-        this.currentQuestion.questionId,  // make sure backend sends this in the question payload
-        answerId,
-        responseTimeMs
-    );
+      const responseTimeMs = Date.now() - this.questionStartTime;
+      this.api.submitAnswer(
+          this.battleId, this.playerId,
+          this.currentQuestion.questionId,
+          this.selectedAnswerId,
+          responseTimeMs
+      );
   }
 
   autoSubmit() {
@@ -206,8 +213,12 @@ export class ArenaComponent implements OnInit, OnDestroy {
           isCorrect:  opt.answerId === result.correctAnswerId,
           isWrong:    opt.isSelected && !result.isCorrect
       }));
+
       // Show score feedback, then auto-request next question after a delay
-      setTimeout(() => this.requestQuestion(), 2000);
+      setTimeout(() => {
+        this.isSubmitting = false; 
+        this.requestQuestion();
+      }, 2000);
   }
 
   updateLeaderboard(data: any[]) {
