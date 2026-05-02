@@ -71,6 +71,15 @@ export class ArenaComponent implements OnInit, OnDestroy {
       this.displayQuestion(question);
     });
 
+    // Add these subscriptions alongside onQuestion()
+    this.api.onAnswerResult().subscribe((result: any) => {
+        this.handleAnswerResult(result);
+    });
+
+    this.api.onLeaderboardUpdate().subscribe((data: any) => {
+        this.updateLeaderboard(data.leaderboard);
+    });
+
     if (!this.api.isConnected()) {
       console.log('WS not connected, reconnecting...');
       try {
@@ -139,13 +148,43 @@ export class ArenaComponent implements OnInit, OnDestroy {
     const responseTimeMs = Date.now() - this.questionStartTime;
     console.log('Selected answer:', answerId, 'Response time:', responseTimeMs, 'ms');
 
-    // TODO: wire up submit answer WebSocket call here
+    this.api.submitAnswer(
+        this.battleId, this.playerId,
+        this.currentQuestion.questionId,  // make sure backend sends this in the question payload
+        answerId,
+        responseTimeMs
+    );
   }
 
   autoSubmit() {
     this.hasAnswered = true;
+    const responseTimeMs = Date.now() - this.questionStartTime;
     console.log('Auto-submit - time expired for question', this.currentQuestionNumber);
-    // TODO: wire up submit answer WebSocket call here with null answerId
+    this.api.submitAnswer(
+        this.battleId, this.playerId,
+        this.currentQuestion.questionId,
+        null,
+        responseTimeMs
+    );
+  }
+
+  handleAnswerResult(result: any) {
+      // Highlight correct/wrong on the options
+      this.options = this.options.map(opt => ({
+          ...opt,
+          isCorrect:  opt.answerId === result.correctAnswerId,
+          isWrong:    opt.isSelected && !result.isCorrect
+      }));
+      // Show score feedback, then auto-request next question after a delay
+      setTimeout(() => this.requestQuestion(), 2000);
+  }
+
+  updateLeaderboard(data: any[]) {
+      this.leaderboard = data.map(p => ({
+          ...p,
+          isYou: p.playerId === this.playerId,
+          ptsTo2nd: /* calculate gap */ 0
+      }));
   }
 
   getOptionLetter(index: number): string {

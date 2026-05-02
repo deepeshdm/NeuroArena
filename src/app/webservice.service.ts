@@ -21,6 +21,8 @@ export class ApiService {
     private chatMessageSubject   = new Subject<any>();
     private battleStartSubject   = new Subject<any>();
     private questionSubject      = new Subject<any>();
+    private answerResultSubject = new Subject<any>();
+    private leaderboardSubject  = new Subject<any>();
 
     constructor(private http: HttpClient) { }
 
@@ -119,6 +121,12 @@ export class ApiService {
             case 'QUESTION':
                 this.questionSubject.next(data.data ?? data);
                 break;
+            case 'ANSWER_RESULT':
+                this.answerResultSubject.next(data.data ?? data);
+                break;
+            case 'LEADERBOARD_UPDATE':
+                this.leaderboardSubject.next(data.data ?? data);
+                break;
             default:
                 console.warn('Unknown message type:', data.type);
         }
@@ -150,6 +158,19 @@ export class ApiService {
         }
     }
 
+    submitAnswer(battleId: string, playerId: string, questionId: string,selectedAnswerId: string | null, responseTimeMs: number): void {
+        console.log('Submitting answer:', { battleId, playerId, questionId, selectedAnswerId, responseTimeMs });
+        if (this.connected && this.stompClient) {
+            this.stompClient.send('/app/quiz/submit-answer', {}, JSON.stringify({
+                battleId,
+                playerId,
+                questionId,
+                selectedAnswerId: selectedAnswerId ?? '',
+                responseTimeMs: String(responseTimeMs)
+            }));
+        }
+    }
+
     requestCurrentQuestion(battleId: string, playerId: string): void {
         if (this.connected && this.stompClient) {
             this.stompClient.send('/app/quiz/get-question', {}, JSON.stringify({ battleId, playerId }));
@@ -175,4 +196,6 @@ export class ApiService {
     onBattleStart()  { return this.battleStartSubject.asObservable(); }
     onQuestion()     { return this.questionSubject.asObservable(); }
     isWebSocketConnected(): boolean { return this.connected; }
+    onAnswerResult()     { return this.answerResultSubject.asObservable(); }
+    onLeaderboardUpdate(){ return this.leaderboardSubject.asObservable(); }
 }
