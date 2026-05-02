@@ -141,6 +141,33 @@
   width: fit-content;
 }
 
+.points-badge {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    width: fit-content;
+}
+
+.points-value {
+    font-family: 'Space Grotesk', Helvetica;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #ff51fa;
+    line-height: 1;
+
+    @media (max-width: 768px) { font-size: 1.6rem; }
+    @media (max-width: 480px) { font-size: 1.4rem; }
+}
+
+.points-label {
+    font-family: 'Manrope', Helvetica;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255, 81, 250, 0.6);
+    text-transform: uppercase;
+}
+
 .badge-text {
   font-family: 'Manrope', Helvetica;
   font-size: 0.65rem;
@@ -752,7 +779,7 @@
 
 
 .submit-btn {
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     width: 100%;
     padding: 1.1rem 2rem;
     position: relative;

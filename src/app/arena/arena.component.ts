@@ -44,6 +44,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   hasAnswered: boolean = false;
   errorMessage: string = '';
   isSubmitting: boolean = false;
+  pointsPossible: number = 0;
 
   leaderboard: any[] = [];
 
@@ -129,7 +130,9 @@ export class ArenaComponent implements OnInit, OnDestroy {
   displayQuestion(question: any) {
     if (this.timerInterval) clearInterval(this.timerInterval);
 
+    console.log('Displaying question:', question);
     this.hasAnswered           = false;
+    this.pointsPossible = question.pointsPossible || 0;
     this.currentQuestion       = question;
     this.currentQuestionNumber = question.questionNumber;
     this.totalQuestions        = question.totalQuestions;
