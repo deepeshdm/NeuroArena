@@ -212,6 +212,53 @@
   }
 }
 
+.option-card.option-correct {
+    background: rgba(0, 255, 120, 0.15);
+    border: 1px solid rgba(0, 255, 120, 0.6);
+    animation: correctFlash 0.5s ease forwards;
+
+    .option-label {
+        background: rgba(0, 255, 120, 0.3);
+        color: #00ff78;
+    }
+
+    .option-text {
+        color: #00ff78;
+        font-weight: 600;
+    }
+}
+
+.option-card.option-wrong {
+    background: rgba(255, 60, 60, 0.15);
+    border: 1px solid rgba(255, 60, 60, 0.6);
+    animation: wrongShake 0.5s ease forwards;
+
+    .option-label {
+        background: rgba(255, 60, 60, 0.3);
+        color: #ff5555;
+    }
+
+    .option-text {
+        color: #ff5555;
+        font-weight: 600;
+    }
+}
+
+@keyframes correctFlash {
+    0%   { box-shadow: 0 0 0px rgba(0, 255, 120, 0);   }
+    40%  { box-shadow: 0 0 28px rgba(0, 255, 120, 0.5); }
+    100% { box-shadow: 0 0 14px rgba(0, 255, 120, 0.25); }
+}
+
+@keyframes wrongShake {
+    0%   { transform: translateX(0);    box-shadow: 0 0 0px rgba(255, 60, 60, 0); }
+    20%  { transform: translateX(-8px); box-shadow: 0 0 20px rgba(255, 60, 60, 0.4); }
+    40%  { transform: translateX(8px);  }
+    60%  { transform: translateX(-5px); }
+    80%  { transform: translateX(5px);  }
+    100% { transform: translateX(0);    box-shadow: 0 0 14px rgba(255, 60, 60, 0.25); }
+}
+
 .option-card.option-selected {
   background: #00ffff;
   border: none;

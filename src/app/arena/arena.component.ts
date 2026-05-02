@@ -9,6 +9,8 @@ interface Option {
   answerText: string;
   displayOrder: number;
   isSelected?: boolean;
+  isCorrect?: boolean;   
+  isWrong?: boolean; 
 }
 
 @Component({

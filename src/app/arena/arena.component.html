@@ -32,7 +32,9 @@
         <div class="options-grid" *ngIf="!isLoading">
             <div *ngFor="let option of options; let i = index" 
                 class="option-card" 
-                [class.option-selected]="option.isSelected"
+                [class.option-selected]="option.isSelected && !option.isCorrect && !option.isWrong"
+                [class.option-correct]="option.isCorrect"
+                [class.option-wrong]="option.isWrong"
                 [class.option-disabled]="hasAnswered"
                 (click)="selectOption(option.answerId, i)">       <!-- no submit here -->
                 <div class="option-label">{{ getOptionLetter(i) }}</div>
@@ -40,6 +42,7 @@
                 <img *ngIf="option.isSelected" src="correct-option.svg" alt="" />
             </div>
         </div>
+
 
         <!-- Submit Button -->
         <button class="submit-btn"
