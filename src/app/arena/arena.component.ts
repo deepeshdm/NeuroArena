@@ -23,6 +23,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   playerId: string = '';
   username: string = '';
   roomCode: string = '';
+  gameCompleted: boolean = false;  // set to true when COMPLETED message received
 
   currentQuestion: any = null;
   currentQuestionNumber: number = 0;
@@ -49,6 +50,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+
+    // Push a dummy state so back button hits this first
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', this.onPopState);
+
     const rawBattleId = localStorage.getItem('battleId') || '';
     const rawPlayerId = localStorage.getItem('playerId') || '';
     const rawRoomCode = localStorage.getItem('roomCode') || '';
@@ -80,6 +86,15 @@ export class ArenaComponent implements OnInit, OnDestroy {
         this.updateLeaderboard(data.leaderboard);
     });
 
+    this.api.onBattleStart().subscribe((data: any) => {
+        if (data.type === 'BATTLE_COMPLETED') {
+            this.gameCompleted = true;
+            alert('Battle completed! Check your results.');
+            this.router.navigate(['/result']);
+        }
+    });
+  
+
     if (!this.api.isConnected()) {
       console.log('WS not connected, reconnecting...');
       try {
@@ -106,6 +121,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     }
   }
 
+
   displayQuestion(question: any) {
     if (this.timerInterval) clearInterval(this.timerInterval);
 
@@ -117,14 +133,29 @@ export class ArenaComponent implements OnInit, OnDestroy {
     this.options               = (question.options || []).map((o: any) => ({ ...o, isSelected: false }));
     this.category              = question.category   || 'General';
     this.difficulty            = question.difficulty || 'Medium';
-    this.timeLeft              = question.timeLimitSeconds || 30;
     this.isLoading             = false;
     this.errorMessage          = '';
-    this.questionStartTime     = Date.now();
+
+    // ── Restore time if same question after refresh, else reset ──
+    const savedQuestionNumber = localStorage.getItem('currentQuestionNumber');
+    const savedStartTime      = localStorage.getItem('questionStartTime');
+    const timeLimit           = question.timeLimitSeconds || 30;
+
+    if (savedQuestionNumber === String(question.questionNumber) && savedStartTime) {
+        // Same question — calculate remaining time
+        const elapsed = Math.floor((Date.now() - parseInt(savedStartTime)) / 1000);
+        this.timeLeft = Math.max(0, timeLimit - elapsed);
+        this.questionStartTime = parseInt(savedStartTime);
+    } else {
+        // New question — fresh timer
+        this.timeLeft          = timeLimit;
+        this.questionStartTime = Date.now();
+        localStorage.setItem('questionStartTime',      String(this.questionStartTime));
+        localStorage.setItem('currentQuestionNumber',  String(question.questionNumber));
+    }
 
     this.startTimer();
-    console.log('Displaying question:', this.currentQuestionNumber);
-  }
+}
 
   startTimer() {
     this.timerInterval = setInterval(() => {
@@ -191,8 +222,17 @@ export class ArenaComponent implements OnInit, OnDestroy {
     return String.fromCharCode(65 + index);
   }
 
+  onPopState = () => {
+    history.pushState(null, '', location.href);  // keep pushing to trap the back button
+}
+
   ngOnDestroy() {
+    window.removeEventListener('popstate', this.onPopState);
     if (this.timerInterval) clearInterval(this.timerInterval);
+  }
+
+  canLeave(): boolean {
+        return this.gameCompleted;  // only allow leaving when game is done
   }
   
 }

@@ -127,6 +127,9 @@ export class ApiService {
             case 'LEADERBOARD_UPDATE':
                 this.leaderboardSubject.next(data.data ?? data);
                 break;
+            case 'BATTLE_COMPLETED':
+                this.battleStartSubject.next({ type: 'BATTLE_COMPLETED', data: data.data ?? data });
+                break;
             default:
                 console.warn('Unknown message type:', data.type);
         }
@@ -198,4 +201,5 @@ export class ApiService {
     isWebSocketConnected(): boolean { return this.connected; }
     onAnswerResult()     { return this.answerResultSubject.asObservable(); }
     onLeaderboardUpdate(){ return this.leaderboardSubject.asObservable(); }
+    onBattleCompleted()   { return this.battleStartSubject.asObservable(); }
 }

@@ -30,11 +30,17 @@ export class LobbyComponent {
   muteChat: boolean = false;
   isReady: boolean = false;
   allReady: boolean = false;
+  battleStarted: boolean = false;  // set to true on BATTLE_START
 
   constructor(private router: Router, private webservice: ApiService){}
 
 
   async ngOnInit() {
+
+    // Push a dummy state so back button hits this first
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', this.onPopState);
+
     // Retrieve and decrypt data from localStorage
     const encryptedUsername = localStorage.getItem('username');
     const encryptedAvatar = localStorage.getItem('avatar');
@@ -101,6 +107,7 @@ export class LobbyComponent {
       
       this.webservice.onBattleStart().subscribe(() => {
         console.log('Battle started event received');
+        this.battleStarted = true;
         this.router.navigate(['/arena'], { 
           queryParams: { 
             battleId: this.battleId,
@@ -164,8 +171,15 @@ export class LobbyComponent {
   }
 
   ngOnDestroy() {
-    // this.webservice.disconnectWebSocket();
+    window.removeEventListener('popstate', this.onPopState);
   }
 
+  canLeave(): boolean {
+        return this.battleStarted;  // allow leaving only after battle starts (redirect to arena)
+  }
+
+  onPopState = () => {
+    history.pushState(null, '', location.href);  // keep pushing to trap the back button
+  }
 
 }

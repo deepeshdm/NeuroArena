@@ -20,6 +20,8 @@ export class LandingPageComponent {
 
   async ngOnInit() {
 
+    localStorage.clear(); // Clear any existing session data on landing page load
+
     // fetch room types
     const response:any = await this.webservice.getRoomTypes();
     if(response.status==200 || response.status=='success'){

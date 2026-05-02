@@ -3,6 +3,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { ArenaComponent } from './arena/arena.component';
 import { ResultComponent } from './result/result.component';
+import { NavigationGuard } from './navigation.guard';
 
 export const routes: Routes = [
     {
@@ -11,11 +12,13 @@ export const routes: Routes = [
     },
     {
         path: 'lobby',
-        component: LobbyComponent
+        component: LobbyComponent,
+        canDeactivate: [NavigationGuard]
     },
     {
         path: 'arena',
-        component: ArenaComponent
+        component: ArenaComponent,
+        canDeactivate: [NavigationGuard]
     },
     {
         path: 'result',
