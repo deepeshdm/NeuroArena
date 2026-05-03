@@ -113,6 +113,10 @@ export class LobbyComponent {
         // };
         this.messages.push(message);
         console.log('All messages:', this.messages);
+
+        // Auto-scroll to bottom
+        this.scrollChatToBottom();
+
       });
       
       this.webservice.onBattleStart().subscribe((data) => {
@@ -206,6 +210,15 @@ export class LobbyComponent {
 
   onPopState = () => {
     history.pushState(null, '', location.href);  // keep pushing to trap the back button
+  }
+
+  private scrollChatToBottom() {
+    setTimeout(() => {
+      const container = document.querySelector('.activity-feed-container');
+      if (container) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 50); // Small delay to ensure DOM is updated
   }
 
 }
