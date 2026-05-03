@@ -105,4 +105,10 @@ export class ResultComponent implements OnInit {
     playAgain()  { this.router.navigate(['/lobby']); }
     retry()      { this.router.navigate(['/lobby']); }
     newBattle()  { this.router.navigate(['/']);      }
+
+    canLeave(): boolean {
+      // Disable back button completely
+      history.pushState(null, '', location.href);
+      return false;
+    }
 }

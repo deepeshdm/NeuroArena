@@ -316,7 +316,9 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   canLeave(): boolean {
-        return this.gameCompleted;  // only allow leaving when game is done
+    // Disable back button completely
+    history.pushState(null, '', location.href);
+    return this.gameCompleted;  // only allow leaving when game is done
   }
   
 }

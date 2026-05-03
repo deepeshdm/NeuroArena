@@ -107,10 +107,10 @@ export class LobbyComponent {
       });
       
       this.webservice.onChatMessage().subscribe((message) => {
-        if(this.muteChat){
-          console.log('Chat is muted. Ignoring message:', message);
-          return;
-        };
+        // if(this.muteChat){
+        //   console.log('Chat is muted. Ignoring message:', message);
+        //   return;
+        // };
         this.messages.push(message);
         console.log('All messages:', this.messages);
       });
@@ -165,6 +165,13 @@ export class LobbyComponent {
 
   toggleMuteChat() {
     this.muteChat = !this.muteChat;
+
+    if(this.muteChat){
+      this.audioService.setVolume(0); // Switch to non-hardcore battle music when muting chat
+    }else{
+      this.audioService.setVolume(1); // Restore volume when unmuting chat
+    }
+
   }
 
   exitRoom() {

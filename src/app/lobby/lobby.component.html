@@ -181,8 +181,10 @@
         <div class="bottom-controls">
 
             <button class="control-btn" (click)="toggleMuteChat()">
-                <img class="control-icon" src="mute.svg"/>
-                <div class="control-txt"> Mute </div>
+                <img class="control-icon" *ngIf="!muteChat" src="mute.svg"/>
+                <span *ngIf="muteChat">🎧</span>
+                <div class="control-txt" *ngIf="!muteChat"> Mute </div>
+                <div class="control-txt" *ngIf="muteChat"> Play Music </div>
             </button>
 
             <button class="control-btn" style="background: #794539;" (click)="exitRoom()">
