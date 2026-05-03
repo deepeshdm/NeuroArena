@@ -42,6 +42,7 @@ export class LobbyComponent {
 
   async ngOnInit() {
 
+    await this.webservice.loadConfig();
     const configData = await this.webservice.getConfig();
     if(configData){
       this.TOTAL_SLOTS = configData.maxPlayers || 0;
