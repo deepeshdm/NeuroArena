@@ -1,4 +1,4 @@
-<div class="result-container">
+<div class="result-container" *ngIf="!isLoading; else loading">
 
     <!-- LEFT SIDEBAR: Arena Standings -->
     <div class="result-sidebar">
@@ -81,28 +81,26 @@
         </div>
 
         <!-- Stats Grid -->
-        <div class="stats-grid">
-
+         <div class="stats-grid">
             <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">FINAL RANK</div>
-                <div class="stat-value rank-value">#04 /10</div>
+                <div class="stat-value rank-value">#{{ finalRank | number:'2.0-0' }} /{{ totalPlayers }}</div>
             </div>
 
             <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">SCORE</div>
-                <div class="stat-value score-value">14,250</div>
+                <div class="stat-value score-value">{{ score | number }}</div>
             </div>
 
             <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">ACCURACY</div>
-                <div class="stat-value accuracy-value">98.4%</div>
+                <div class="stat-value accuracy-value">{{ accuracy }}%</div>
             </div>
 
             <div class="stat-card" [class.stat-card--failure]="!userWon">
                 <div class="stat-label">AVG SPEED</div>
-                <div class="stat-value speed-value">1.2s</div>
+                <div class="stat-value speed-value">{{ avgSpeedSecs }}s</div>
             </div>
-
         </div>
 
         <!-- Cognitive Architecture -->
@@ -196,3 +194,10 @@
     </div>
 
 </div>
+
+
+<ng-template #loading>
+    <div style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#0b0c1f;">
+        <div class="spinner"></div>
+    </div>
+</ng-template>

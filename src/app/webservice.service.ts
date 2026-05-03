@@ -202,4 +202,13 @@ export class ApiService {
     onAnswerResult()     { return this.answerResultSubject.asObservable(); }
     onLeaderboardUpdate(){ return this.leaderboardSubject.asObservable(); }
     onBattleCompleted()   { return this.battleStartSubject.asObservable(); }
+
+
+    async getResult(battleId: string, playerId: string): Promise<any> {
+        return await lastValueFrom(
+            this.http.get(`${this.apiUrl}/result/final_result`, { params: { battleId, playerId } })
+        );
+    }
+
+
 }

@@ -1,148 +1,117 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../webservice.service';
+import { CommonModule } from '@angular/common';
 
 interface CognitiveAttribute {
-  name: string;
-  value: number;
-  color: string;
+    name: string;
+    value: number;
+    color: string;
 }
 
 interface BattlePersona {
-  name: string;
-  description: string;
-  topSkill: string;
-  skillLevel: string;
-  growthArea: string;
-  growthValue: string;
+    name: string;
+    description: string;
+    topSkill: string;
+    skillLevel: string;
+    growthArea: string;
+    growthValue: string;
 }
 
 interface FinalStanding {
-  rank: number;
-  username: string;
-  score: number;
-}
-
-interface ResultData {
-  finalRank: number;
-  totalPlayers: number;
-  score: number;
-  accuracy: number;
-  avgSpeed: number;
+    rank: number;
+    username: string;
+    score: number;
+    isYou?: boolean;
 }
 
 @Component({
-  selector: 'app-result',
-  templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss']
+    selector: 'app-result',
+    imports: [CommonModule],
+    templateUrl: './result.component.html',
+    styleUrls: ['./result.component.scss']
 })
-export class ResultComponent {
+export class ResultComponent implements OnInit {
 
-  // Toggle this to switch between Victory and Failure states
-  userWon: boolean = true;
+    isLoading: boolean = true;
+    userWon:   boolean = false;
 
-  finalStandings: FinalStanding[] = [
-    {
-      rank: 1,
-      username: 'Xero_01',
-      score: 16400
-    },
-    {
-      rank: 4,
-      username: 'You',
-      score: 14250
-    },
-    {
-      rank: 2,
-      username: 'NeonSavant',
-      score: 15820
-    },
-    {
-      rank: 3,
-      username: 'NeuralGhost',
-      score: 14990
-    },
-    {
-      rank: 5,
-      username: 'Cortex_Flux',
-      score: 13110
-    },
-    {
-      rank: 6,
-      username: 'Bit_Oracle',
-      score: 12450
+    finalRank:    number = 0;
+    totalPlayers: number = 0;
+    score:        number = 0;
+    accuracy:     number = 0;
+    avgSpeedSecs: number = 0;
+
+    finalStandings:      FinalStanding[]      = [];
+    cognitiveAttributes: CognitiveAttribute[] = [];
+    battlePersona:       BattlePersona        = {} as BattlePersona;
+
+    // Attribute icon map
+    attrIcons: Record<string, string> = {
+        LOGIC: '🔮', SPEED: '⚡', FOCUS: '🎯', EXECUTION: '🎯', MEMORY: '⚙️'
+    };
+
+    constructor(private api: ApiService, private router: Router) {}
+
+    async ngOnInit() {
+        const rawBattleId = localStorage.getItem('battleId') || '';
+        const rawPlayerId = localStorage.getItem('playerId') || '';
+
+        if (!rawBattleId || !rawPlayerId) {
+            this.router.navigate(['/']);
+            return;
+        }
+
+        const battleId = this.api.decrypt(rawBattleId);
+        const playerId = this.api.decrypt(rawPlayerId);
+
+        try {
+            const data = await this.api.getResult(battleId, playerId);
+            this.applyResultData(data);
+        } catch (err) {
+            console.error('Failed to load result:', err);
+        } finally {
+            this.isLoading = false;
+        }
     }
-  ];
 
-  victoryPersona: BattlePersona = {
-    name: 'The Architect',
-    description: 'You build mental structures with terrifying precision. Your logic is your strongest weapon, allowing you to bypass noise effortlessly.',
-    topSkill: 'Structural Logic',
-    skillLevel: 'Elite',
-    growthArea: 'Speed-Focus Synergy',
-    growthValue: 'Aura-7'
-  };
+    applyResultData(data: any) {
+        this.userWon      = data.userWon;
+        this.finalRank    = data.finalRank;
+        this.totalPlayers = data.totalPlayers;
+        this.score        = data.score;
+        this.accuracy     = data.accuracy;
+        this.avgSpeedSecs = data.avgSpeedSecs;
 
-  failurePersona: BattlePersona = {
-    name: 'The Fragmented',
-    description: 'Your neural cohesion is faltering. Mental structures are collapsing under the pressure of noise, leading to critical inefficiencies in logic execution.',
-    topSkill: 'Structural Logic',
-    skillLevel: 'Elite',
-    growthArea: 'Speed-Focus Synergy',
-    growthValue: 'Aura-7'
-  };
+        this.finalStandings = (data.leaderboard || []).map((p: any) => ({
+            rank:     p.rank,
+            username: p.username,
+            score:    p.score,
+            isYou:    p.playerId === this.api.decrypt(localStorage.getItem('playerId') || '')
+        }));
 
-  get battlePersona(): BattlePersona {
-    return this.userWon ? this.victoryPersona : this.failurePersona;
-  }
+        const attrColors: Record<string, string> = {
+            LOGIC: '#ffffff', SPEED: '#00ffff',
+            FOCUS: '#ff51fa', EXECUTION: '#ffffff', MEMORY: '#ffffff'
+        };
+        this.cognitiveAttributes = (data.cognitiveAttributes || []).map((a: any) => ({
+            name:  a.name,
+            value: a.value,
+            color: attrColors[a.name] || '#ffffff'
+        }));
 
-  cognitiveAttributes: CognitiveAttribute[] = [
-    {
-      name: 'LOGIC',
-      value: 94,
-      color: '#ffffff'
-    },
-    {
-      name: 'SPEED',
-      value: 91,
-      color: '#00ffff'
-    },
-    {
-      name: 'FOCUS',
-      value: 88,
-      color: '#ff51fa'
-    },
-    {
-      name: 'EXECUTION',
-      value: 85,
-      color: '#ffffff'
-    },
-    {
-      name: 'MEMORY',
-      value: 72,
-      color: '#ffffff'
+        const p = data.persona;
+        this.battlePersona = {
+            name:        p.name,
+            description: p.description,
+            topSkill:    p.topSkill,
+            skillLevel:  p.skillLevel,
+            growthArea:  p.growthArea,
+            growthValue: p.growthValue
+        };
     }
-  ];
 
-  resultData: ResultData = {
-    finalRank: 4,
-    totalPlayers: 10,
-    score: 14250,
-    accuracy: 98.4,
-    avgSpeed: 1.2
-  };
-
-  playAgain() {
-    // Navigate to same arena or lobby
-    console.log('Play Again clicked');
-  }
-
-  retry() {
-    // Retry after failure
-    console.log('Retry clicked');
-  }
-
-  newBattle() {
-    // Navigate to battle selection
-    console.log('New Battle clicked');
-  }
-
+    playAgain()  { this.router.navigate(['/lobby']); }
+    retry()      { this.router.navigate(['/lobby']); }
+    newBattle()  { this.router.navigate(['/']);      }
 }
