@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../webservice.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AudioService } from '../audio.service';
 
 interface Option {
   answerId: string;
@@ -57,10 +58,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private api: ApiService
+    private api: ApiService,
+    private audioService: AudioService
   ) {}
 
   async ngOnInit() {
+
+    this.playAudio();
 
     // Push a dummy state so back button hits this first
     history.pushState(null, '', location.href);
@@ -128,6 +132,18 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // FIX: Small delay to ensure STOMP subscriptions are registered
     // before we fire the request
     setTimeout(() => this.requestQuestion(), 300);
+  }
+
+  playAudio() {
+    try {
+      if(this.isHardcoreMode){
+        this.audioService.playMusic('hardcore');
+      } else {
+        this.audioService.playMusic('battle');
+      }
+    } catch (error) {
+      console.error('Failed to play lobby music:', error);
+    }
   }
 
   requestQuestion() {
@@ -229,7 +245,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
       // Check for elimination in hardcore mode
       if (this.isHardcoreMode && !result.isCorrect && !this.isEliminated) {
-        
+
           this.isEliminated = true;
           this.eliminationMessage = '💀 YOU HAVE BEEN ELIMINATED! 💀';
           this.hasAnswered = true;

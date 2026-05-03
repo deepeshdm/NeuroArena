@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../webservice.service';
 import { FormsModule } from "@angular/forms";
+import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'app-lobby',
@@ -32,11 +33,12 @@ export class LobbyComponent {
   allReady: boolean = false;
   battleStarted: boolean = false;  // set to true on BATTLE_START
 
-  constructor(private router: Router, private webservice: ApiService){}
+  constructor(private router: Router, private webservice: ApiService, private audioService: AudioService){}
 
 
   async ngOnInit() {
 
+    this.playAudio();
     // Push a dummy state so back button hits this first
     history.pushState(null, '', location.href);
     window.addEventListener('popstate', this.onPopState);
@@ -67,6 +69,14 @@ export class LobbyComponent {
     await this.connectWebSocket();
   }
 
+
+  playAudio() {
+    try {
+      this.audioService.playMusic('lobby');
+    } catch (error) {
+      console.error('Failed to play lobby music:', error);
+    }
+  }
 
 
   async connectWebSocket() {
