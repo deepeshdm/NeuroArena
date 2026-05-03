@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { ApiService } from './webservice.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
 
   currentRoute = '';
 
-  constructor(private router: Router){
+  constructor(private router: Router, private apiService: ApiService){
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -25,6 +26,10 @@ export class AppComponent {
 
       });
 
+  }
+
+  async ngOnInit() {
+    await this.apiService.loadConfig();
   }
 
   openGithub(){

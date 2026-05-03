@@ -12,6 +12,7 @@ export class ApiService {
 
     private apiUrl = environment.apiUrl;
     private wsUrl = environment.wsUrl;
+    private config: any = null;
 
     private stompClient: any;
     private connected = false;
@@ -208,6 +209,33 @@ export class ApiService {
         return await lastValueFrom(
             this.http.get(`${this.apiUrl}/result/final_result`, { params: { battleId, playerId } })
         );
+    };
+
+
+    async loadConfig(): Promise<any> {
+        try {
+            const response = await lastValueFrom(
+                this.http.get<AnalyserNode>(`${this.apiUrl}/config`)
+            );
+            this.config = response;
+            localStorage.setItem('gameConfig', JSON.stringify(this.config));
+            return this.config;
+        } catch (error) {
+            console.error('Failed to load config:', error);
+            return { maxPlayers: 10, questionsPerBattle: 10, questionTimeLimit: 30 };
+        }
+    }
+
+    getConfig(): any {
+        if (this.config) {
+            return this.config;
+        }
+        const cached = localStorage.getItem('gameConfig');
+        if (cached) {
+            this.config = JSON.parse(cached);
+            return this.config;
+        }
+        return { maxPlayers: 10, questionsPerBattle: 10, questionTimeLimit: 30 };
     }
 
 

@@ -13,7 +13,7 @@ import { AudioService } from '../audio.service';
 })
 export class LobbyComponent {
 
-  TOTAL_SLOTS = 1 // Max players in a room
+  TOTAL_SLOTS = 0; 
   slots = Array.from({ length: this.TOTAL_SLOTS });
 
   showToast: boolean = false;
@@ -41,6 +41,14 @@ export class LobbyComponent {
 
 
   async ngOnInit() {
+
+    const configData = await this.webservice.getConfig();
+    if(configData){
+      this.TOTAL_SLOTS = configData.maxPlayers || 0;
+      this.slots = Array.from({ length: this.TOTAL_SLOTS });
+    }else{
+      console.warn('Failed to load config or invalid config format:', configData);
+    }
 
     this.playAudio();
     // Push a dummy state so back button hits this first
