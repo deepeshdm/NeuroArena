@@ -20,7 +20,7 @@
                     <div class="grey-text"> ENCRYPTED ROOM ID : </div>
                     <div class="roomid-box trans-box2"> 
                         <div class="roomid"> {{roomCode}} </div>
-                        <img class="roomicon" src="roomid-icon.svg" alt=""/> 
+                        <img class="roomicon" (click)="copyRoomCode()" src="roomid-icon.svg" alt=""/> 
                     </div>
                 </div>
             </div>
@@ -198,3 +198,14 @@
 
 </div>
 
+
+
+<!-- Toast Notification -->
+<div class="toast-notification" *ngIf="showToast" [class.toast-success]="toastType === 'success'" [class.toast-error]="toastType === 'error'">
+    <div class="toast-icon">
+        <span *ngIf="toastType === 'success'">✅</span>
+        <span *ngIf="toastType === 'error'">❌</span>
+    </div>
+    <div class="toast-message">{{ toastMessage }}</div>
+    <button class="toast-close" (click)="showToast = false">✕</button>
+</div>

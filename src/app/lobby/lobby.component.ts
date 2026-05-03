@@ -14,8 +14,12 @@ import { AudioService } from '../audio.service';
 export class LobbyComponent {
 
   TOTAL_SLOTS = 1 // Max players in a room
-  // creates array [0,1,2,3...]
   slots = Array.from({ length: this.TOTAL_SLOTS });
+
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastType: 'success' | 'error' = 'success';
+  // creates array [0,1,2,3...]
   roomCode: string = '';
   battleId: string = '';
   username: string = '';
@@ -143,6 +147,34 @@ export class LobbyComponent {
       console.error('WebSocket connection failed:', error);
       this.isLoading = false;
     }
+  }
+
+  showToastMessage(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    
+    // Auto hide after 3 seconds
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
+  }
+
+  copyRoomCode() {
+    const roomCode = this.roomCode;
+    
+    if (!roomCode) {
+      this.showToastMessage('Room code not found!', 'error');
+      return;
+    }
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(roomCode).then(() => {
+      this.showToastMessage(`Room code ${roomCode} copied to clipboard!`, 'success');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+      this.showToastMessage('Failed to copy room code', 'error');
+    });
   }
 
 
