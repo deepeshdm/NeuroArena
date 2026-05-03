@@ -47,6 +47,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
   pointsPossible: number = 0;
 
   leaderboard: any[] = [];
+  floatingPoints: { id: number; value: number }[] = [];
+  private floatingCounter = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -219,11 +221,23 @@ export class ArenaComponent implements OnInit, OnDestroy {
           isWrong:    opt.isSelected && !result.isCorrect
       }));
 
+      if (result.isCorrect && result.pointsEarned) {
+          this.showFloatingPoints(result.pointsEarned);
+      }
+
       // Show score feedback, then auto-request next question after a delay
       setTimeout(() => {
         this.isSubmitting = false; 
         this.requestQuestion();
       }, 2000);
+  }
+
+  showFloatingPoints(points: number) {
+      const id = this.floatingCounter++;
+      this.floatingPoints.push({ id, value: points });
+      setTimeout(() => {
+          this.floatingPoints = this.floatingPoints.filter(p => p.id !== id);
+      }, 1500); // remove after animation completes
   }
 
   updateLeaderboard(data: any[]) {

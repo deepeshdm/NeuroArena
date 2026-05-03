@@ -24,7 +24,7 @@
 
             <div class="points-badge">
                 <div class="points-value">{{ pointsPossible }}</div>
-                <div class="points-label">MAX POINTS</div>
+                <div class="points-label">POINTS</div>
             </div>
 
             <div class="question-text">
@@ -68,6 +68,13 @@
         <div class="error-message" *ngIf="errorMessage">
             {{ errorMessage }}
             <button (click)="requestQuestion()">Retry</button>
+        </div>
+
+        <!-- Floating Points -->
+        <div class="floating-points-container">
+            <div *ngFor="let fp of floatingPoints" class="floating-point" [id]="fp.id">
+                +{{ fp.value }} PTS
+            </div>
         </div>
 
     </div>

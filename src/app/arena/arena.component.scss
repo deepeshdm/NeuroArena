@@ -918,3 +918,38 @@
     100% { left: 125%; }
 }
 
+.floating-points-container {
+    position: fixed;
+    bottom: 35%;
+    left: 38%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.floating-point {
+    font-family: 'Space Grotesk', Helvetica;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #00ff78;
+    text-shadow:
+        0 0 20px rgba(0, 255, 120, 0.8),
+        0 0 40px rgba(0, 255, 120, 0.4);
+    white-space: nowrap;
+    animation: floatUp 1.5s ease-out forwards;
+
+    @media (max-width: 768px) {
+        font-size: 2rem;
+        left: 30%;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.75rem;
+    }
+}
+
+@keyframes floatUp {
+    0%   { opacity: 0;   transform: translateY(0px)   scale(0.6); }
+    20%  { opacity: 1;   transform: translateY(-20px)  scale(1.1); }
+    60%  { opacity: 1;   transform: translateY(-60px)  scale(1);   }
+    100% { opacity: 0;   transform: translateY(-100px) scale(0.9); }
+}
