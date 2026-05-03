@@ -1,4 +1,24 @@
-<div class="arena-container">
+<div class="arena-container" [class.hardcore-mode]="isHardcoreMode" [class.eliminated]="isEliminated">
+
+    <!-- Add Hardcore Mode Warning Banner -->
+    <div class="hardcore-warning" *ngIf="isHardcoreMode && !isEliminated">
+        <div class="warning-content">
+            <span class="warning-icon">⚠️</span>
+            <span class="warning-text">HARDCORE MODE ACTIVE - ONE WRONG ANSWER = ELIMINATION</span>
+            <span class="warning-icon">💀</span>
+        </div>
+        <div class="warning-pulse"></div>
+    </div>
+
+    <!-- Add Elimination Screen -->
+    <div class="elimination-overlay" *ngIf="isEliminated">
+        <div class="elimination-content">
+            <div class="skull-icon">💀</div>
+            <h1 class="elimination-title">ELIMINATED</h1>
+            <p class="elimination-message">{{ eliminationMessage }}</p>
+            <div class="elimination-red-zone"></div>
+        </div>
+    </div>
 
     <!-- LEFT SECTION: Question -->
     <div class="arena-left">

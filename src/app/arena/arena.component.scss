@@ -953,3 +953,249 @@
     60%  { opacity: 1;   transform: translateY(-60px)  scale(1);   }
     100% { opacity: 0;   transform: translateY(-100px) scale(0.9); }
 }
+
+
+
+// ============================================================================
+// HARDCORE MODE STYLES
+// ============================================================================
+
+.hardcore-mode {
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at center, transparent 30%, rgba(255, 0, 0, 0.05) 100%);
+        z-index: 1;
+        animation: redZonePulse 2s ease-in-out infinite;
+    }
+}
+
+@keyframes redZonePulse {
+    0%, 100% {
+        background: radial-gradient(circle at center, transparent 30%, rgba(255, 0, 0, 0.05) 100%);
+    }
+    50% {
+        background: radial-gradient(circle at center, transparent 20%, rgba(255, 0, 0, 0.15) 100%);
+    }
+}
+
+// Hardcore Warning Banner
+.hardcore-warning {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    animation: warningGlow 1s ease-in-out infinite;
+    border-radius:9999px
+}
+
+.warning-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.9), rgba(139, 0, 0, 0.9));
+    border: 2px solid #ff0000;
+    border-radius: 50px;
+    padding: 12px 24px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+}
+
+.warning-icon {
+    font-size: 1.5rem;
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+.warning-text {
+    font-family: 'Space Grotesk', Helvetica;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+}
+
+.warning-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50px;
+    animation: pulseRing 1.5s ease-out infinite;
+}
+
+@keyframes warningGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(255, 0, 0, 0.8);
+    }
+}
+
+@keyframes pulseRing {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 20px rgba(255, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+// Elimination Overlay
+.elimination-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(139, 0, 0, 0.8));
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: eliminationFadeIn 0.5s ease-out forwards;
+}
+
+.elimination-content {
+    text-align: center;
+    animation: eliminationShake 0.5s ease-out;
+}
+
+.skull-icon {
+    font-size: 8rem;
+    animation: skullPulse 1s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8));
+}
+
+.elimination-title {
+    font-family: 'Space Grotesk', Helvetica;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ff0000;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin: 20px 0;
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    animation: textGlitch 0.3s ease-in-out infinite;
+}
+
+.elimination-message {
+    font-family: 'Manrope', Helvetica;
+    font-size: 1.2rem;
+    color: #ff6666;
+    margin-bottom: 30px;
+}
+
+.elimination-red-zone {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.3), transparent);
+    border-radius: 50%;
+    animation: redZoneExpand 1.5s ease-out infinite;
+}
+
+@keyframes eliminationFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+    }
+}
+
+@keyframes eliminationShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+@keyframes skullPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 40px rgba(255, 0, 0, 1));
+    }
+}
+
+@keyframes textGlitch {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        transform: skew(0deg);
+    }
+    25% {
+        text-shadow: -2px 0 10px rgba(255, 0, 0, 0.5);
+        transform: skew(2deg);
+    }
+    75% {
+        text-shadow: 2px 0 10px rgba(255, 0, 0, 0.5);
+        transform: skew(-2deg);
+    }
+}
+
+@keyframes redZoneExpand {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+// Hardcore Mode Option Card Styling
+.hardcore-mode .option-card {
+    transition: all 0.3s ease;
+}
+
+.hardcore-mode .option-card:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    border-color: rgba(255, 0, 0, 0.5);
+}
+
+// Timer in Hardcore Mode
+.hardcore-mode .timer {
+    color: #ff0000;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    animation: timerWarning 0.5s ease-in-out infinite;
+}
+
+@keyframes timerWarning {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+// Progress Bar in Hardcore Mode
+.hardcore-mode .progress-fill {
+    background: linear-gradient(90deg, #ff0000, #ff6666);
+}

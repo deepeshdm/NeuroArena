@@ -50,6 +50,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
   floatingPoints: { id: number; value: number }[] = [];
   private floatingCounter = 0;
 
+  isHardcoreMode: boolean = false;
+  isEliminated: boolean = false;
+  eliminationMessage: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -66,6 +70,14 @@ export class ArenaComponent implements OnInit, OnDestroy {
     const rawPlayerId = localStorage.getItem('playerId') || '';
     const rawRoomCode = localStorage.getItem('roomCode') || '';
     const rawUsername = localStorage.getItem('username') || '';
+    const rawRoomTypeId = localStorage.getItem('roomTypeId');
+
+    // Check if this is Hardcore Mode (roomTypeId = 6)
+    if (rawRoomTypeId) {
+        const roomTypeId = parseInt(this.api.decrypt(rawRoomTypeId));
+        this.isHardcoreMode = (roomTypeId == 6);
+        console.log('Hardcore Mode:', this.isHardcoreMode);
+    }
 
     if (!rawBattleId || !rawPlayerId) {
       console.error('No battle info found');
@@ -214,22 +226,48 @@ export class ArenaComponent implements OnInit, OnDestroy {
   }
 
   handleAnswerResult(result: any) {
-      // Highlight correct/wrong on the options
-      this.options = this.options.map(opt => ({
-          ...opt,
-          isCorrect:  opt.answerId === result.correctAnswerId,
-          isWrong:    opt.isSelected && !result.isCorrect
-      }));
 
-      if (result.isCorrect && result.pointsEarned) {
-          this.showFloatingPoints(result.pointsEarned);
+      // Check for elimination in hardcore mode
+      if (this.isHardcoreMode && !result.isCorrect && !this.isEliminated) {
+        
+          this.isEliminated = true;
+          this.eliminationMessage = '💀 YOU HAVE BEEN ELIMINATED! 💀';
+          this.hasAnswered = true;
+          
+          if (this.timerInterval) clearInterval(this.timerInterval);
+          
+          // Show elimination screen
+          setTimeout(() => {
+              this.router.navigate(['/result'], { 
+                  queryParams: { 
+                      battleId: this.battleId,
+                      eliminated: true,
+                      message: 'One wrong answer in Hardcore Mode = Elimination!'
+                  } 
+              });
+          }, 3000);
+          return;
+
+      } else{
+
+        // Highlight correct/wrong on the options
+        this.options = this.options.map(opt => ({
+            ...opt,
+            isCorrect:  opt.answerId === result.correctAnswerId,
+            isWrong:    opt.isSelected && !result.isCorrect
+        }));
+
+        if (result.isCorrect && result.pointsEarned) {
+            this.showFloatingPoints(result.pointsEarned);
+        }
+
+        // Show score feedback, then auto-request next question after a delay
+        setTimeout(() => {
+          this.isSubmitting = false; 
+          this.requestQuestion();
+        }, 2000);
       }
 
-      // Show score feedback, then auto-request next question after a delay
-      setTimeout(() => {
-        this.isSubmitting = false; 
-        this.requestQuestion();
-      }, 2000);
   }
 
   showFloatingPoints(points: number) {

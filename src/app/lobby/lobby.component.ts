@@ -105,15 +105,24 @@ export class LobbyComponent {
         console.log('All messages:', this.messages);
       });
       
-      this.webservice.onBattleStart().subscribe(() => {
+      this.webservice.onBattleStart().subscribe((data) => {
         console.log('Battle started event received');
-        this.battleStarted = true;
-        this.router.navigate(['/arena'], { 
-          queryParams: { 
-            battleId: this.battleId,
-            roomCode: this.roomCode 
-          } 
-        });
+
+        if(data.type === 'BATTLE_START'){
+          this.battleStarted = true;
+          this.router.navigate(['/arena'], { 
+            queryParams: { 
+              battleId: this.battleId,
+              roomCode: this.roomCode 
+            } 
+          });
+        };
+
+        // Check if this is Hardcore Mode (roomTypeId = 6)
+        if (data.roomTypeId) {
+          localStorage.setItem('roomTypeId', this.webservice.encrypt(data.roomTypeId.toString()));
+        }
+
       });
       
     } catch (error) {
