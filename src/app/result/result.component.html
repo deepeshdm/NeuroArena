@@ -49,6 +49,19 @@
             <div class="persona-name">{{ battlePersona.name }}</div>
             <div class="persona-description">{{ battlePersona.description }}</div>
 
+            <div class="ai-analysis">
+                <div class="ai-label">
+                    <span class="ai-dot" [class.ai-dot--fallback]="aiAnalysisFallback"></span>
+                    {{ aiAnalysisFallback ? 'COMBAT ANALYSIS' : 'NEURAL AI ANALYSIS' }}
+                </div>
+                <div class="ai-text" *ngIf="!aiLoading">{{ aiAnalysis }}</div>
+                <div class="ai-skeleton" *ngIf="aiLoading">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line skeleton-line--short"></div>
+                    <div class="skeleton-line"></div>
+                </div>
+            </div>
+
             <div class="persona-details">
                 <div class="persona-skill">
                     <div class="skill-label">TOP SKILL</div>

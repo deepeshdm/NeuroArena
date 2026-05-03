@@ -34,6 +34,9 @@ interface FinalStanding {
 export class ResultComponent implements OnInit {
 
     isLoading: boolean = true;
+    aiAnalysis         = '';
+    aiAnalysisFallback = false;
+    aiLoading          = true;
     userWon:   boolean = false;
 
     finalRank:    number = 0;
@@ -54,28 +57,26 @@ export class ResultComponent implements OnInit {
     constructor(private api: ApiService, private router: Router) {}
 
     async ngOnInit() {
-        const rawBattleId = localStorage.getItem('battleId') || '';
-        const rawPlayerId = localStorage.getItem('playerId') || '';
+      const rawBattleId = localStorage.getItem('battleId') || '';
+      const rawPlayerId = localStorage.getItem('playerId') || '';
 
-        if (!rawBattleId || !rawPlayerId) {
-            this.router.navigate(['/']);
-            return;
-        }
+      if (!rawBattleId || !rawPlayerId) { this.router.navigate(['/']); return; }
 
-        const battleId = this.api.decrypt(rawBattleId);
-        const playerId = this.api.decrypt(rawPlayerId);
+      const battleId = this.api.decrypt(rawBattleId);
+      const playerId = this.api.decrypt(rawPlayerId);
 
-        try {
-            const data = await this.api.getResult(battleId, playerId);
-            this.applyResultData(data);
-        } catch (err) {
-            console.error('Failed to load result:', err);
-        } finally {
-            this.isLoading = false;
-        }
+      try {
+          const data = await this.api.getResult(battleId, playerId);
+          this.applyResultData(data, playerId);
+      } catch (err) {
+          console.error('Failed to load result:', err);
+      } finally {
+          this.isLoading = false;
+          this.aiLoading = false;
+      }
     }
 
-    applyResultData(data: any) {
+    applyResultData(data: any, playerId: string) {
         this.userWon      = data.userWon;
         this.finalRank    = data.finalRank;
         this.totalPlayers = data.totalPlayers;
@@ -84,10 +85,8 @@ export class ResultComponent implements OnInit {
         this.avgSpeedSecs = data.avgSpeedSecs;
 
         this.finalStandings = (data.leaderboard || []).map((p: any) => ({
-            rank:     p.rank,
-            username: p.username,
-            score:    p.score,
-            isYou:    p.playerId === this.api.decrypt(localStorage.getItem('playerId') || '')
+            rank: p.rank, username: p.username,
+            score: p.score, isYou: p.playerId === playerId
         }));
 
         const attrColors: Record<string, string> = {
@@ -95,20 +94,12 @@ export class ResultComponent implements OnInit {
             FOCUS: '#ff51fa', EXECUTION: '#ffffff', MEMORY: '#ffffff'
         };
         this.cognitiveAttributes = (data.cognitiveAttributes || []).map((a: any) => ({
-            name:  a.name,
-            value: a.value,
-            color: attrColors[a.name] || '#ffffff'
+            name: a.name, value: a.value, color: attrColors[a.name] || '#ffffff'
         }));
 
-        const p = data.persona;
-        this.battlePersona = {
-            name:        p.name,
-            description: p.description,
-            topSkill:    p.topSkill,
-            skillLevel:  p.skillLevel,
-            growthArea:  p.growthArea,
-            growthValue: p.growthValue
-        };
+        this.battlePersona       = data.persona;
+        this.aiAnalysis          = data.aiAnalysis         || '';
+        this.aiAnalysisFallback  = data.aiAnalysisFallback || false;
     }
 
     playAgain()  { this.router.navigate(['/lobby']); }
