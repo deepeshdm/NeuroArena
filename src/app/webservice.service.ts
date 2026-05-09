@@ -24,6 +24,7 @@ export class ApiService {
     private questionSubject      = new Subject<any>();
     private answerResultSubject = new Subject<any>();
     private leaderboardSubject  = new Subject<any>();
+    private waitingForPlayersSubject = new Subject<any>();
 
     constructor(private http: HttpClient) { }
 
@@ -131,6 +132,10 @@ export class ApiService {
             case 'BATTLE_COMPLETED':
                 this.battleStartSubject.next({ type: 'BATTLE_COMPLETED', data: data.data ?? data });
                 break;
+            case 'WAITING_FOR_PLAYERS':
+                this.waitingForPlayersSubject.next(data);
+                break;
+        break;
             default:
                 console.warn('Unknown message type:', data.type);
         }
@@ -237,6 +242,9 @@ export class ApiService {
         }
         return { maxPlayers: 10, questionsPerBattle: 10, questionTimeLimit: 30 };
     }
+
+
+    onWaitingForPlayers() { return this.waitingForPlayersSubject.asObservable(); }
 
 
 }

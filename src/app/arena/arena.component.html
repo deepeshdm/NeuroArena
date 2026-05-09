@@ -85,6 +85,19 @@
             </span>
         </button>
 
+
+        <!-- Waiting for players -->
+        <div class="waiting-overlay" *ngIf="isWaitingForPlayers">
+            <div class="waiting-content">
+                <div class="waiting-spinner"></div>
+                <div class="waiting-title">QUESTIONS COMPLETE</div>
+                <div class="waiting-message">Waiting for other players to finish...</div>
+                <div class="waiting-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+
         <!-- Error Message -->
         <div class="error-message" *ngIf="errorMessage">
             {{ errorMessage }}

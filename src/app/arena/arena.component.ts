@@ -54,6 +54,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   isHardcoreMode: boolean = false;
   isEliminated: boolean = false;
   eliminationMessage: string = '';
+  isWaitingForPlayers: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -115,6 +116,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
             alert('Battle completed! Check your results.');
             this.router.navigate(['/result']);
         }
+    });
+
+    this.api.onWaitingForPlayers().subscribe(() => {
+      this.isWaitingForPlayers = true;
+      this.isLoading = false;
     });
   
 

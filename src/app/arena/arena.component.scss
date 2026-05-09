@@ -1199,3 +1199,66 @@
 .hardcore-mode .progress-fill {
     background: linear-gradient(90deg, #ff0000, #ff6666);
 }
+
+.waiting-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 12, 31, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(6px);
+}
+
+.waiting-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+}
+
+.waiting-spinner {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 255, 255, 0.1);
+    border-top-color: #00ffff;
+    animation: spin 1s linear infinite;
+}
+
+.waiting-title {
+    font-family: 'Space Grotesk', Helvetica;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #c1fffe;
+}
+
+.waiting-message {
+    font-family: 'Manrope', Helvetica;
+    font-size: 0.85rem;
+    color: #a9a9c3;
+    letter-spacing: 0.05em;
+}
+
+.waiting-dots {
+    display: flex;
+    gap: 0.4rem;
+
+    span {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background: #00ffff;
+        animation: dotBounce 1s ease-in-out infinite;
+
+        &:nth-child(2) { animation-delay: 0.15s; }
+        &:nth-child(3) { animation-delay: 0.3s;  }
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
